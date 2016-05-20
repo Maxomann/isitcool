@@ -1,0 +1,16 @@
+/*  GRID OF FIVE  */
+.span_5_of_5_nomargin {
+	width: 100%;
+}
+.span_4_of_5_nomargin {
+	width: 80%;
+}
+.span_3_of_5_nomargin {
+	width: 60%;
+}
+.span_2_of_5_nomargin {
+	width: 40%;
+}
+.span_1_of_5_nomargin {
+	width: 20%;
+}
