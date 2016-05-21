@@ -10,22 +10,22 @@ robot_tags:
 
 <div id="searchResult">
     <hr />
-    <h2 id="srHeading">
-        '<div id="srHeadingWord"></div>' has a Coolness Level of:<br/>
-        <div class="highlight"><div id="srHeadingPercentage"></div>%</div><br/>
-        (&nbsp;<div id="srHeadingComment"></div>&nbsp;)
-    </h2>
+    <p id="srHeading">
+        '<span id="srHeadingWord"></span>' has a Coolness Level of:<br/>
+        <span class="highlight"><span id="srHeadingPercentage"></span>%</span><br/>
+        (&nbsp;<span id="srHeadingComment"></span>&nbsp;)
+    </p>
 
     <div class="section group">
         <div class="col span_1_of_2">
-            <div id="resultBox1" class="resultBox">
+            <div class="resultBox">
                 <canvas id="srPieChart" width="700" height="400"></canvas>
                 <p id="srPercentage" class="highlight"></p>
             </div>
         </div>
         <div class="col span_1_of_2">
-            <div id="resultBox2" class="resultBox">
-                <h2 class="highlight">Information</h2>
+            <div class="resultBox">
+                <h2>Information</h2>
                 <p id="definition"></p>
 
                 <h2 class="highlight">Image</h2>
@@ -43,14 +43,14 @@ robot_tags:
 
     <div class="section group">
         <div class="col span_1_of_2">
-            <div id="resultBox3" class="resultBox">
-                <h2 class="highlight">Coolness over Time</h2>
+            <div class="resultBox">
+                <h2>Coolness over Time</h2>
                 <canvas id="srHistoryChart" width="700" height="400"></canvas>
             </div>
         </div>
         <div class="col span_1_of_2">
-            <div id="resultBox4" class="resultBox">
-                <h2 class="highlight">What does the internet say?</h2>
+            <div class="resultBox">
+                <h2>What does the internet say?</h2>
                 <div id="srRedditContainer"></div>
                 <p class="source"><a target="_blank" href="http://reddit.com">&nbsp;Source: Reddit.com</a></p>
             </div>

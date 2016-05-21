@@ -6,17 +6,27 @@ body{
 }
 
 header h1{
-    font-size: 8em;
+    font-size: 20vw;
+}
+@media (min-width: 800px){
+    header h1{
+        font-size: 160px;
+    }
 }
 
 h2{
+    color: #F9690E;
     font-size: 2em;
     font-weight: bold;
 }
 
 .cool {
     color: #F9690E;
-    display: inline;
+}
+
+#beta {
+    font-size: 0.5em;
+    color: #F9690E;
 }
 
 a{
@@ -67,17 +77,12 @@ p{
     font-size: 1.5em;
 }
 
+#srHeading{
+    font-size: 32px;
+    font-weight: bold;
+}
 #srHeading div{
     display: inline;
-}
-
-#resultBox1{
-}
-#resultBox2{
-}
-#resultBox3{
-}
-#resultBox4{
 }
 
 #srPercentage{
@@ -118,12 +123,6 @@ p{
 }
 .input_big:focus{
     outline: none;
-}
-
-#beta {
-    display: inline;
-    font-size: 0.5em;
-    color: #F9690E;
 }
 
 .adv_wide{
