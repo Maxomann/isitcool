@@ -16,18 +16,21 @@ robot_tags:
         (&nbsp;<span id="srHeadingComment"></span>&nbsp;)
     </p>
 
-    <div class="section group">
-        <div class="col span_1_of_2">
-            <div class="resultBox">
-                <canvas id="srPieChart" width="700" height="400"></canvas>
-                <p id="srPercentage" class="highlight"></p>
-            </div>
+    <!-- <img src="/assets/testad.jpg" class="adv_wide" width="728" height="90"> -->
+
+    <div id="resultContainer">
+        <div class="resultBox">
+            <canvas id="srPieChart" width="700" height="400"></canvas>
+            <p id="srPercentage" class="highlight"></p>
         </div>
-        <div class="col span_1_of_2">
-            <div class="resultBox">
+
+        <div class="resultBox">
+            <div class="resultBox_half">
                 <h2>Information</h2>
                 <p id="definition"></p>
+            </div>
 
+            <div class="resultBox_half">
                 <h2 class="highlight">Image</h2>
                 <img class="example_image" src="">
                 <img class="example_image" src="">
@@ -37,23 +40,16 @@ robot_tags:
                 <p class="source"><a target="_blank" href="http://wikipedia.org">&nbsp;Source: Wikipedia.org</a></p>
             </div>
         </div>
-    </div>
 
-    <!-- <img src="/assets/testad.jpg" class="adv_wide" width="728" height="90"> -->
-
-    <div class="section group">
-        <div class="col span_1_of_2">
-            <div class="resultBox">
-                <h2>Coolness over Time</h2>
-                <canvas id="srHistoryChart" width="700" height="400"></canvas>
-            </div>
+        <div class="resultBox">
+            <h2>Coolness over Time</h2>
+            <canvas id="srHistoryChart" width="700" height="340"></canvas>
         </div>
-        <div class="col span_1_of_2">
-            <div class="resultBox">
-                <h2>What does the internet say?</h2>
-                <div id="srRedditContainer"></div>
-                <p class="source"><a target="_blank" href="http://reddit.com">&nbsp;Source: Reddit.com</a></p>
-            </div>
+
+        <div class="resultBox">
+            <h2>What does the internet say?</h2>
+            <div id="srRedditContainer"></div>
+            <p class="source"><a target="_blank" href="http://reddit.com">&nbsp;Source: Reddit.com</a></p>
         </div>
     </div>
 </div>

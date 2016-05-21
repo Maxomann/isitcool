@@ -16,8 +16,9 @@ header h1{
 
 h2{
     color: #F9690E;
-    font-size: 2em;
+    font-size: 32px;
     font-weight: bold;
+    margin-bottom: 26px;
 }
 
 .cool {
@@ -44,11 +45,8 @@ a.noitalic{
 
 #searchResult{
     visibility: hidden;
-
     opacity:0;
-
     margin-top: 100px;
-
     transition:opacity 1s linear;
 }
 
@@ -56,17 +54,30 @@ a.noitalic{
     height: 100px;
 }
 
-hr{
-    color: #34495E;
-    background-color: #34495E;
-    border-color: #34495E;
+#resultContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: space-between;
 }
 
 .resultBox{
     width: 700px;
     height: 400px;
-    margin: auto;
-    margin-top: 30px;
+    margin: 40px 20px 40px 20px;
+    max-width: 100%;
+
+    background-color: #2c3e50;/*#2c3e50*/
+    flex-basis: auto;
+}
+.resultBox_half{
+    width: 700px;
+    height: 200px;
+    margin: 0;
+
+    background-color: #2c3e50;/*#2c3e50*/
 }
 
 .resultBox h2{
@@ -74,7 +85,21 @@ hr{
 }
 
 p{
-    font-size: 1.5em;
+    font-size: 24px;
+}
+
+.highlight{
+    color: #F9690E;
+}
+
+.source{
+    font-size: 1.2em;
+}
+
+hr{
+    color: #34495E;
+    background-color: #34495E;
+    border-color: #34495E;
 }
 
 #srHeading{
@@ -93,21 +118,6 @@ p{
     font-weight: bold;
     font-size: 80px;
     pointer-events: none;
-}
-#srPieChart{
-    top:0;
-}
-
-#srHistoryChart{
-    height:340px;
-}
-
-.highlight{
-    color: #F9690E;
-}
-
-.source{
-    font-size: 1.2em;
 }
 
 .input_big{
@@ -130,4 +140,6 @@ p{
     width: 728px;
     height: 90px;
     border: 2px solid #F9690E;
+
+    max-width: 100%;
 }
