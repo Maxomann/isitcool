@@ -6,17 +6,28 @@ body{
 }
 
 header h1{
-    font-size: 8em;
+    font-size: 20vw;
+}
+@media (min-width: 800px){
+    header h1{
+        font-size: 160px;
+    }
 }
 
 h2{
-    font-size: 2em;
+    color: #F9690E;
+    font-size: 32px;
     font-weight: bold;
+    margin-bottom: 26px;
 }
 
 .cool {
     color: #F9690E;
-    display: inline;
+}
+
+#beta {
+    font-size: 0.5em;
+    color: #F9690E;
 }
 
 a{
@@ -34,16 +45,56 @@ a.noitalic{
 
 #searchResult{
     visibility: hidden;
-
     opacity:0;
-
     margin-top: 100px;
-
     transition:opacity 1s linear;
 }
 
 .example_image{
     height: 100px;
+}
+
+#resultContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: space-between;
+}
+
+.resultBox{
+    width: 700px;
+    max-width: 100%;
+    /*min-height: 400px;*/
+    margin: 40px 20px 40px 20px;
+
+    background-color: #2c3e50;/*#2c3e50*/
+    flex-basis: auto;
+}
+.resultBox_half{
+    width: 700px;
+    max-width: 100%;
+    /*min-height: 200px;*/
+    margin: 0;
+
+    background-color: #2c3e50;/*#2c3e50*/
+}
+
+.resultBox h2{
+    margin-top: 0;
+}
+
+p{
+    font-size: 24px;
+}
+
+.highlight{
+    color: #F9690E;
+}
+
+.source{
+    font-size: 1.2em;
 }
 
 hr{
@@ -52,32 +103,12 @@ hr{
     border-color: #34495E;
 }
 
-.resultBox{
-    width: 700px;
-    height: 400px;
-    margin: auto;
-    margin-top: 30px;
+#srHeading{
+    font-size: 32px;
+    font-weight: bold;
 }
-
-.resultBox h2{
-    margin-top: 0;
-}
-
-p{
-    font-size: 1.5em;
-}
-
 #srHeading div{
     display: inline;
-}
-
-#resultBox1{
-}
-#resultBox2{
-}
-#resultBox3{
-}
-#resultBox4{
 }
 
 #srPercentage{
@@ -88,21 +119,6 @@ p{
     font-weight: bold;
     font-size: 80px;
     pointer-events: none;
-}
-#srPieChart{
-    top:0;
-}
-
-#srHistoryChart{
-    height:340px;
-}
-
-.highlight{
-    color: #F9690E;
-}
-
-.source{
-    font-size: 1.2em;
 }
 
 .input_big{
@@ -120,15 +136,11 @@ p{
     outline: none;
 }
 
-#beta {
-    display: inline;
-    font-size: 0.5em;
-    color: #F9690E;
-}
-
 .adv_wide{
     margin: 30px;
     width: 728px;
     height: 90px;
     border: 2px solid #F9690E;
+
+    max-width: 100%;
 }
