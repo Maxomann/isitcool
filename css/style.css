@@ -126,6 +126,12 @@ hr{
     font-size: 80px;
     pointer-events: none;
 }
+@media (max-width: 700px){
+    #srPercentage{
+        position: absolute;
+        visibility: hidden;
+    }
+}
 
 .input_big{
     font-family: bebasneue;
