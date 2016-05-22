@@ -3,10 +3,11 @@ body{
     text-align: center;
     color: #2980b9;
     background-color: #2c3e50;
+    overflow-x: hidden;
 }
 
 header h1{
-    font-size: 20vw;
+    font-size: 18vw;
 }
 @media (min-width: 800px){
     header h1{
@@ -80,6 +81,11 @@ a.noitalic{
 
     background-color: #2c3e50;/*#2c3e50*/
 }
+@media (max-width: 500px){
+    .resultBox{
+        margin: 40px 0 40px 0;
+    }
+}
 
 .resultBox h2{
     margin-top: 0;
@@ -120,6 +126,12 @@ hr{
     font-size: 80px;
     pointer-events: none;
 }
+@media (max-width: 700px){
+    #srPercentage{
+        position: absolute;
+        visibility: hidden;
+    }
+}
 
 .input_big{
     font-family: bebasneue;
@@ -131,6 +143,12 @@ hr{
     font-weight: bold;
     border:none;
     padding: 5px;
+}
+@media (max-width: 375px){
+    .input_big{
+        width: 90%;
+        margin: auto;
+    }
 }
 .input_big:focus{
     outline: none;

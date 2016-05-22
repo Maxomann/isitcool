@@ -250,17 +250,6 @@ function drawHistoryChart(word, coolness){
     }
     historyValues.reverse();
 
-	/*
-	label: "My First dataset",
-	fillColor: "rgba(249,105,14,0.2)",
-	strokeColor: "#F9690E",
-	pointColor: "#F9690E",
-	pointStrokeColor: "#2c3e50",
-	pointHighlightFill: "#2c3e50",
-	pointHighlightStroke: "rgba(220,220,220,1)",
-	data: historyValues
-	*/
-
     var data ={
         labels: ["2000","2003","2006", "2009", "2012", "today"],
         datasets:[
@@ -270,7 +259,7 @@ function drawHistoryChart(word, coolness){
                 backgroundColor: "rgba(249,105,14,0.2)",
                 borderColor: "#F9690E",
                 pointBorderColor: "#F9690E",
-                pointHoverBackgroundColor: "#2c3e50",
+                pointHoverBackgroundColor: "#F9690E",
                 pointHoverBorderColor: "rgba(220,220,220,1)",
                 data: historyValues
             }
