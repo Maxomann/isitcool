@@ -22,6 +22,24 @@ function getCoolnessForWord(word){
     return parseInt(asString.substring(asString.length-2,asString.length));
 }
 
+function cleanInput(input){
+	var retVal = input.replace(/\s\s+/g, ' ');
+	retVal = retVal.trim()
+	return retVal.toUpperCase();
+}
+
+function setResultBoxVisible(bool){
+	var resultBox = document.getElementById('searchResult');
+
+	if(bool){
+		resultBox.style.visibility = 'visible';
+        resultBox.style.opacity = 1;
+	}else{
+		resultBox.style.visibility = 'hidden';
+        resultBox.style.opacity = 0;
+	}
+}
+
 var levels = {};
 levels["0%"]="Not cool At all.";
 levels["20%"]="Not So Cool.";
@@ -52,18 +70,16 @@ function processUrlParameter(){
 function analyzeWord(){
     var resultBox = document.getElementById('searchResult');
 
-    var wordOriginal = document.getElementById('textbox').value
-    var word = wordOriginal.toUpperCase();
+    var input = document.getElementById('textbox').value
+    var word = cleanInput(input);
 
-    word = word.trim();
     if(!word){
         history.pushState( {}, '', '?' );
-        resultBox.style.visibility = 'hidden';
-        resultBox.style.opacity = 0;
+        setResultBoxVisible(false);
     }
     else
     {
-        history.pushState( {}, '', '?'+encodeURIComponent(wordOriginal) );
+        history.pushState( {}, '', '?'+encodeURIComponent(word.toLowerCase()) );
         var coolness = getCoolnessForWord(word);
 
         if(word=="ISITCOOL.NET")
@@ -81,8 +97,6 @@ function analyzeWord(){
         else
             comment=levels["80%"];
 
-        resultBox.style.visibility = 'visible';
-        resultBox.style.opacity = 1;
         document.getElementById('srHeadingWord').innerHTML = word;
         document.getElementById('srHeadingPercentage').innerHTML = coolness.toString();
         document.getElementById('srHeadingComment').innerHTML = comment;
@@ -103,34 +117,38 @@ function analyzeWord(){
 		getRedditSearch(word);
 		}
 		catch(e){}
+
+		setResultBoxVisible(true);
     }
 };
 
 var _pieChart;
 function drawPieChart(coolness){
-    var chartData = [
+	var data = {
+    labels: [],//no labels
+    datasets: [
         {
-            value:coolness,
-            color:'#F9690E',
-            label:'Coolness',
-            highlight:'#f97623'
-        },
-        {
-            value:100-coolness,
-            color:'grey'
-        }
-    ];
+            data: [coolness, 100-coolness],
+            backgroundColor: [
+                "#F9690E",
+                "grey"
+            ],
+            hoverBackgroundColor: [
+                "#f97623",
+                "grey"
+            ]
+        }]
+	};
 
     var options ={
-        tooltipFontColor: 'rgba(0,0,0,0)',
-        tooltipFillColor: 'rgba(0,0,0,0)'
+        tooltips:{enabled:false}
     };
 
 
     var context = document.getElementById('srPieChart').getContext('2d');
     if(_pieChart !== undefined)
         _pieChart.destroy();
-    _pieChart = new Chart(context).Doughnut(chartData, options);
+    _pieChart = new Chart(context, {type:'doughnut', data:data, options:options});
     var percentage = document.getElementById('srPercentage');
     percentage.innerHTML = coolness.toString()+'%';
 };
@@ -232,33 +250,44 @@ function drawHistoryChart(word, coolness){
     }
     historyValues.reverse();
 
-    var labels =["2000","2003","2006", "2009", "2012", "2015"];
+	/*
+	label: "My First dataset",
+	fillColor: "rgba(249,105,14,0.2)",
+	strokeColor: "#F9690E",
+	pointColor: "#F9690E",
+	pointStrokeColor: "#2c3e50",
+	pointHighlightFill: "#2c3e50",
+	pointHighlightStroke: "rgba(220,220,220,1)",
+	data: historyValues
+	*/
 
-    var chartData ={
-        labels: labels,
+    var data ={
+        labels: ["2000","2003","2006", "2009", "2012", "today"],
         datasets:[
             {
-                label: "My First dataset",
-                fillColor: "rgba(249,105,14,0.2)",
-                strokeColor: "#F9690E",
-                pointColor: "#F9690E",
-                pointStrokeColor: "#2c3e50",
-                pointHighlightFill: "#2c3e50",
-                pointHighlightStroke: "rgba(220,220,220,1)",
+                label: "Coolness",
+				fill:true,
+                backgroundColor: "rgba(249,105,14,0.2)",
+                borderColor: "#F9690E",
+                pointBorderColor: "#F9690E",
+                pointHoverBackgroundColor: "#2c3e50",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
                 data: historyValues
             }
         ]
     };
 
-    var options={
-        scaleFontColor: "#2980b9"
+	var options ={
+        tooltips:{enabled:false},
+		scales:{fontColor:"#2980b9"}
+		/*scaleFontColor: "#2980b9"*/
     };
 
 
     var context = document.getElementById('srHistoryChart').getContext('2d');
     if(_historyChart !== undefined)
         _historyChart.destroy();
-    _historyChart = new Chart(context).Line(chartData, options);
+    _historyChart = new Chart(context, {type:'line', data:data, options:options});
 }
 
 function getRedditSearch(word){
