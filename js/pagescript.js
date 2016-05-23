@@ -1,7 +1,3 @@
-// RELEASE:
-console.log = function() {};
-// DISABLE FOR DEBUG
-
 function fnv32a(str){
 	var FNV1_32A_INIT = 0x811c9dc5;
 	var hval = FNV1_32A_INIT;
@@ -20,6 +16,16 @@ function getCoolnessForWord(word){
 
     var asString = valueHash.toString();
     return parseInt(asString.substring(asString.length-2,asString.length));
+}
+
+function isMobileDevice(){
+	return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+}
+
+function hideVirtualKeyboard(){
+	if(document.activeElement && isMobileDevice()){
+    	document.activeElement.blur();
+	}
 }
 
 function cleanInput(input){
@@ -47,13 +53,31 @@ levels["40%"]="Cool?";
 levels["60%"]="Really Cool!";
 levels["80%"]="The Coolest Word Ever!";
 
+var timeout;
+function clearInputBoxTimeout(){
+	if(timeout!==undefined){
+		clearTimeout(timeout);
+	}
+}
+function onInputBoxChanged(){
+	clearInputBoxTimeout();
+	timeout = setTimeout(function(){analyzeWord()}, 1000);
+}
+
 $(document).ready(function(){
 	initContactInformation();
+	$('a').smoothScroll();
 
     $('#textbox').keypress(function(e){
-        if(e.keyCode==13)
+        if(e.keyCode==13){
+			clearInputBoxTimeout();
+			hideVirtualKeyboard();
             analyzeWord();
+		}
     });
+	$('#textbox').on('input', function() {
+	    onInputBoxChanged();
+	});
 
     processUrlParameter();
 });
@@ -75,15 +99,20 @@ function analyzeWord(){
 
     if(!word){
         history.pushState( {}, '', '?' );
-        setResultBoxVisible(false);
+		setResultBoxVisible(false);
     }
     else
     {
         history.pushState( {}, '', '?'+encodeURIComponent(word.toLowerCase()) );
         var coolness = getCoolnessForWord(word);
 
-        if(word=="ISITCOOL.NET")
-            coolness=100;
+		for(el in wordIndex){
+			var element = wordIndex[el];
+            if(element.word==word){
+				coolness = element.value;
+				break;
+			}
+		}
 
         var comment;
         if(coolness<20)
