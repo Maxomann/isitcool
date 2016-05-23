@@ -1,7 +1,3 @@
-// RELEASE:
-console.log = function() {};
-// DISABLE FOR DEBUG
-
 function fnv32a(str){
 	var FNV1_32A_INIT = 0x811c9dc5;
 	var hval = FNV1_32A_INIT;
@@ -110,8 +106,13 @@ function analyzeWord(){
         history.pushState( {}, '', '?'+encodeURIComponent(word.toLowerCase()) );
         var coolness = getCoolnessForWord(word);
 
-        if(word=="ISITCOOL.NET")
-            coolness=100;
+		for(el in wordIndex){
+			var element = wordIndex[el];
+            if(element.word==word){
+				coolness = element.value;
+				break;
+			}
+		}
 
         var comment;
         if(coolness<20)

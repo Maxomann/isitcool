@@ -43,6 +43,9 @@ a:hover{
 a.noitalic{
     font-style: normal;
 }
+a.nohovereffect{
+    color:inherit;
+}
 
 #searchResult{
     visibility: hidden;
