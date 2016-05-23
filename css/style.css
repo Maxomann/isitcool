@@ -6,6 +6,15 @@ body{
     overflow-x: hidden;
 }
 
+footer *{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#content{
+    margin-bottom: 80px;
+}
+
 header h1{
     font-size: 18vw;
 }
