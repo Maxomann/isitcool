@@ -22,6 +22,16 @@ function getCoolnessForWord(word){
     return parseInt(asString.substring(asString.length-2,asString.length));
 }
 
+function isMobileDevice(){
+	return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+}
+
+function hideVirtualKeyboard(){
+	if(document.activeElement && isMobileDevice()){
+    	document.activeElement.blur();
+	}
+}
+
 function cleanInput(input){
 	var retVal = input.replace(/\s\s+/g, ' ');
 	retVal = retVal.trim()
@@ -47,13 +57,31 @@ levels["40%"]="Cool?";
 levels["60%"]="Really Cool!";
 levels["80%"]="The Coolest Word Ever!";
 
+var timeout;
+function clearInputBoxTimeout(){
+	if(timeout!==undefined){
+		clearTimeout(timeout);
+	}
+}
+function onInputBoxChanged(){
+	clearInputBoxTimeout();
+	timeout = setTimeout(function(){analyzeWord()}, 1000);
+}
+
 $(document).ready(function(){
 	initContactInformation();
+	$('a').smoothScroll();
 
     $('#textbox').keypress(function(e){
-        if(e.keyCode==13)
+        if(e.keyCode==13){
+			clearInputBoxTimeout();
+			hideVirtualKeyboard();
             analyzeWord();
+		}
     });
+	$('#textbox').on('input', function() {
+	    onInputBoxChanged();
+	});
 
     processUrlParameter();
 });
@@ -75,7 +103,7 @@ function analyzeWord(){
 
     if(!word){
         history.pushState( {}, '', '?' );
-        setResultBoxVisible(false);
+		setResultBoxVisible(false);
     }
     else
     {
