@@ -104,7 +104,7 @@ function analyzeWord(){
     else
     {
         history.pushState( {}, '', '?q='+encodeURIComponent(word.toLowerCase()) );
-		ga('send', 'pageview', '/?'+word.toLowerCase());
+		ga('send', 'pageview', '/?q='+word.toLowerCase());
         var coolness = getCoolnessForWord(word);
 
 		for(el in wordIndex){
