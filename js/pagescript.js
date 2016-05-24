@@ -68,6 +68,8 @@ $(document).ready(function(){
 	initContactInformation();
 	$('a').smoothScroll();
 
+	processUrlParameter();
+
     $('#textbox').keypress(function(e){
         if(e.keyCode==13){
 			clearInputBoxTimeout();
@@ -78,14 +80,12 @@ $(document).ready(function(){
 	$('#textbox').on('input', function() {
 	    onInputBoxChanged();
 	});
-
-    processUrlParameter();
 });
 
 function processUrlParameter(){
     var word = decodeURIComponent(location.search);
     if(word!=''){
-        word = word.substr(1);
+        word = word.substr(3);
         document.getElementById('textbox').value = word.trim();
         analyzeWord();
     }
@@ -103,7 +103,7 @@ function analyzeWord(){
     }
     else
     {
-        history.pushState( {}, '', '?'+encodeURIComponent(word.toLowerCase()) );
+        history.pushState( {}, '', '?q='+encodeURIComponent(word.toLowerCase()) );
 		ga('send', 'pageview', '/?'+word.toLowerCase());
         var coolness = getCoolnessForWord(word);
 
