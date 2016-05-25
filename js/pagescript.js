@@ -183,14 +183,17 @@ function drawPieChart(coolness){
     percentage.innerHTML = coolness.toString()+'%';
 };
 
+function loadExampleImageFromGoogle(i/*Index of the example image*/){
+	var exampleImages = document.getElementsByClassName("example_image");
+	console.log("Google"+i)
+}
+
 function getDefinition(word){
 	var definitionElement = document.getElementById('definition');
 	var exampleImages = document.getElementsByClassName("example_image");
-
-	var imageSources = [];
 	//reset image sources
 	for (i = 0; i < 4; i++){
-		imageSources[i]="";
+		exampleImages[i].src="";
 	}
 
 	$.ajax({
@@ -222,33 +225,49 @@ function getDefinition(word){
 				var images = page['images'];
 				if(images!==undefined){
 					//load and show image
-
 					for (i = 0; i < 4; i++){
-						var imageName = images[i]["title"];
-						(function(i)//use closure to save i
-						{
-							$.ajax({
-						        url: 'https://en.wikipedia.org/w/api.php?', // The URL to the API. You can get this in the API page of the API you intend to consume
-						        type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
-						        data: {
-									titles:imageName,
-									format:"json",
-									action:"query",
-									uselang:"content",
-									prop:"imageinfo",
-									iiprop:"url",
-									redirects:"1"
-								}, // Additional parameters here
-						        dataType: 'jsonp',
-						        success: function(data) {
-									console.log(data);
-									if(imageSources[i]=data["query"]["pages"]["-1"]!==undefined){
-										imageSources[i]=data["query"]["pages"]["-1"]["imageinfo"][0]["url"];
-									}
-								},
-								error: function(err) { console.log("AJAX Wikipedia images"); },
-							});
-						})(i);
+						if(i<images.length){
+							var imageName = images[i]["title"];
+							(function(i)//use closure to save i
+							{
+								$.ajax({
+							        url: 'https://en.wikipedia.org/w/api.php?', // The URL to the API. You can get this in the API page of the API you intend to consume
+							        type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
+							        data: {
+										titles:imageName,
+										format:"json",
+										action:"query",
+										uselang:"content",
+										prop:"imageinfo",
+										iiprop:"url|size",
+										redirects:"1"
+									}, // Additional parameters here
+							        dataType: 'jsonp',
+							        success: function(data) {
+										var singleImageQueryData = data["query"]["pages"]["-1"];
+										if(singleImageQueryData!==undefined){
+											singleImageQueryData = singleImageQueryData["imageinfo"][0]
+											var url = singleImageQueryData["url"];
+											var file_extension = url.substring(url.length-4, url.length);
+											var sizex = singleImageQueryData["width"];
+											var sizey = singleImageQueryData["height"];
+
+											if(file_extension.toLowerCase()==".svg" || sizex<100 || sizey<100){
+												/*If image not appropriate use one from google*/
+												loadExampleImageFromGoogle(i);
+											}else{
+												exampleImages[i].src=url;
+											}
+										}else{
+											loadExampleImageFromGoogle(i);
+										}
+									},
+									error: function(err) { console.log("AJAX Wikipedia images"); },
+								});
+							})(i);
+						}else{
+							loadExampleImageFromGoogle(i);
+						}
 					}
 				}
 			}else{
@@ -257,11 +276,6 @@ function getDefinition(word){
         },
         error: function(err) { console.log("AJAX Wikipedia word"); },
     });
-
-	//set image sources
-	for (i = 0; i < 4; i++){
-		exampleImages[i].src=imageSources[i];
-	}
 }
 
 
