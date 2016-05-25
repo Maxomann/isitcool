@@ -1,3 +1,5 @@
+var api_key_flickr = "2f25bef1b043e8cb0b0380a80c4a551a";
+
 function fnv32a(str){
 	var FNV1_32A_INIT = 0x811c9dc5;
 	var hval = FNV1_32A_INIT;
@@ -183,35 +185,50 @@ function drawPieChart(coolness){
     percentage.innerHTML = coolness.toString()+'%';
 };
 
-function getDefinition(word){
-	/* URBAN DICTIONARY - OLD
+function loadExampleImageFromFlickr(word, i/*Index of the example image*/){
+	var exampleImages = document.getElementsByClassName("example_image");
+
 	$.ajax({
-        url: 'http://api.urbandictionary.com/v0/define?term='+word, // The URL to the API. You can get this in the API page of the API you intend to consume
+        url: "https://api.flickr.com/services/rest/",
         type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
-        data: {}, // Additional parameters here
-        dataType: 'json',
-        success: function(data) {
-            console.log(data);
+        data: {
+			method:"flickr.photos.search",
+			format:"json",
+			api_key: api_key_flickr,
+			text: word.toLowerCase(),
+			media: "photos",
+			sort: "interestingness-desc",
+			per_page: 4,
+			license: "4,5,6,7"
+		}, // Additional parameters here
+        complete: function(response) {
+			var substr = response.responseText.substring(14, response.responseText.length-1);
+			var data = JSON.parse(substr);
+			$.ajax({
+		        url: "https://api.flickr.com/services/rest/",
+		        type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
+		        data: {
+					method:"flickr.photos.getSizes",
+					format:"json",
+					api_key: api_key_flickr,
+					photo_id: data["photos"]["photo"][i]["id"]
+				}, // Additional parameters here
+		        complete: function(response) {
+					var substr = response.responseText.substring(14, response.responseText.length-1);
+					var data = JSON.parse(substr);
 
-            var definitionElement = document.getElementById('definition');
-            var exampleElement = document.getElementById('example');
-
-            if(data['result_type']=='exact'){
-                var definition= data['list'][0]['definition'];
-                var example= '"' + data['list'][0]['example'] + '"';
-
-                definitionElement.innerHTML = definition.substring(0,400) + '&nbsp<a target="_blank" href="http://www.urbandictionary.com/define.php?term='+word+'">...&nbsp;Show&nbspmore</a>';
-                exampleElement.innerHTML = example.substring(0,400) + '&nbsp<a target="_blank" href="http://www.urbandictionary.com/define.php?term='+word+'">...&nbsp;Show&nbspmore</a>';
-            }
-            else{
-                definitionElement.innerHTML = "Not available";
-                exampleElement.innerHTML = "Not available";
-            }
+					if( data["sizes"]["size"][5] !== undefined ){
+						exampleImages[i].src = data["sizes"]["size"][5]["source"];
+					}else{
+						exampleImages[i].src = data["sizes"]["size"][4]["source"];
+					}
+		        },
+		    });
         },
-        error: function(err) { alert(err); },
     });
-	*/
+}
 
+function getDefinition(word){
 	var definitionElement = document.getElementById('definition');
 	var exampleImages = document.getElementsByClassName("example_image");
 	//reset image sources
@@ -219,10 +236,24 @@ function getDefinition(word){
 		exampleImages[i].src="";
 	}
 
+	/*Set link to image source*/
+	document.getElementById("images_source").href = "http://www.flickr.com/search/?license=4%2C5%2C6%2C9%2C10&advanced=1&sort=interestingness-desc&text="+word.toLowerCase();
+
 	$.ajax({
         url: 'https://en.wikipedia.org/w/api.php?', // The URL to the API. You can get this in the API page of the API you intend to consume
         type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
-        data: { titles:word.toLowerCase(), format:"json", action:"query", uselang:"content", prop:"extracts|images", redirects:"1", exchars:"400", explaintext:"1", exsectionformat:"plain", imlimit:"4" }, // Additional parameters here
+        data: {
+			titles:word.toLowerCase(),
+			format:"json",
+			action:"query",
+			uselang:"content",
+			prop:"extracts|images",
+			redirects:"1",
+			exchars:"400",
+			explaintext:"1",
+			exsectionformat:"plain",
+			imlimit:"4"
+		}, // Additional parameters here
         dataType: 'jsonp',
         success: function(data) {
 			var pages = data['query']['pages'];
@@ -237,24 +268,53 @@ function getDefinition(word){
 				var images = page['images'];
 				if(images!==undefined){
 					//load and show image
-
 					for (i = 0; i < 4; i++){
-						var imageName = images[i]["title"];
-						(function(i)//use closure to save i
-						{
-							$.ajax({
-						        url: 'https://en.wikipedia.org/w/api.php?', // The URL to the API. You can get this in the API page of the API you intend to consume
-						        type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
-						        data: { titles:imageName, format:"json", action:"query", uselang:"content", prop:"imageinfo", iiprop:"url", redirects:"1",  imlimit:"4" }, // Additional parameters here
-						        dataType: 'jsonp',
-						        success: function(data) {
-									if(exampleImages[i].src=data["query"]["pages"]["-1"]!==undefined){
-										exampleImages[i].src=data["query"]["pages"]["-1"]["imageinfo"][0]["url"];
-									}
-								},
-								error: function(err) { console.log("AJAX Wikipedia images"); },
-							});
-						})(i);
+						if(i<images.length){
+							var imageName = images[i]["title"];
+							(function(i)//use closure to save i
+							{
+								$.ajax({
+							        url: 'https://en.wikipedia.org/w/api.php?', // The URL to the API. You can get this in the API page of the API you intend to consume
+							        type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
+							        data: {
+										titles:imageName,
+										format:"json",
+										action:"query",
+										uselang:"content",
+										prop:"imageinfo",
+										iiprop:"url|size",
+										redirects:"1",
+										iiurlheight:"400"
+									}, // Additional parameters here
+							        dataType: 'jsonp',
+							        success: function(data) {
+										console.log(data);
+
+										var singleImageQueryData = data["query"]["pages"]["-1"];
+										if(singleImageQueryData!==undefined){
+											singleImageQueryData = singleImageQueryData["imageinfo"][0]
+											var url = singleImageQueryData["url"];
+											var thumburl = singleImageQueryData["thumburl"];
+											var file_extension = url.substring(url.length-4, url.length);
+											var sizex = singleImageQueryData["width"];
+											var sizey = singleImageQueryData["height"];
+
+											if(file_extension.toLowerCase()==".svg" || sizex<200 || sizey<200){
+												/*If image not appropriate use one from google*/
+												loadExampleImageFromFlickr(word, i);
+											}else{
+												exampleImages[i].src=thumburl;
+											}
+										}else{
+											loadExampleImageFromFlickr(word, i);
+										}
+									},
+									error: function(err) { console.log("AJAX Wikipedia images"); },
+								});
+							})(i);
+						}else{
+							loadExampleImageFromFlickr(word, i);
+						}
 					}
 				}
 			}else{
