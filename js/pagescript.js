@@ -184,45 +184,30 @@ function drawPieChart(coolness){
 };
 
 function getDefinition(word){
-	/* URBAN DICTIONARY - OLD
-	$.ajax({
-        url: 'http://api.urbandictionary.com/v0/define?term='+word, // The URL to the API. You can get this in the API page of the API you intend to consume
-        type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
-        data: {}, // Additional parameters here
-        dataType: 'json',
-        success: function(data) {
-            console.log(data);
-
-            var definitionElement = document.getElementById('definition');
-            var exampleElement = document.getElementById('example');
-
-            if(data['result_type']=='exact'){
-                var definition= data['list'][0]['definition'];
-                var example= '"' + data['list'][0]['example'] + '"';
-
-                definitionElement.innerHTML = definition.substring(0,400) + '&nbsp<a target="_blank" href="http://www.urbandictionary.com/define.php?term='+word+'">...&nbsp;Show&nbspmore</a>';
-                exampleElement.innerHTML = example.substring(0,400) + '&nbsp<a target="_blank" href="http://www.urbandictionary.com/define.php?term='+word+'">...&nbsp;Show&nbspmore</a>';
-            }
-            else{
-                definitionElement.innerHTML = "Not available";
-                exampleElement.innerHTML = "Not available";
-            }
-        },
-        error: function(err) { alert(err); },
-    });
-	*/
-
 	var definitionElement = document.getElementById('definition');
 	var exampleImages = document.getElementsByClassName("example_image");
+
+	var imageSources = [];
 	//reset image sources
 	for (i = 0; i < 4; i++){
-		exampleImages[i].src="";
+		imageSources[i]="";
 	}
 
 	$.ajax({
         url: 'https://en.wikipedia.org/w/api.php?', // The URL to the API. You can get this in the API page of the API you intend to consume
         type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
-        data: { titles:word.toLowerCase(), format:"json", action:"query", uselang:"content", prop:"extracts|images", redirects:"1", exchars:"400", explaintext:"1", exsectionformat:"plain", imlimit:"4" }, // Additional parameters here
+        data: {
+			titles:word.toLowerCase(),
+			format:"json",
+			action:"query",
+			uselang:"content",
+			prop:"extracts|images",
+			redirects:"1",
+			exchars:"400",
+			explaintext:"1",
+			exsectionformat:"plain",
+			imlimit:"4"
+		}, // Additional parameters here
         dataType: 'jsonp',
         success: function(data) {
 			var pages = data['query']['pages'];
@@ -245,11 +230,20 @@ function getDefinition(word){
 							$.ajax({
 						        url: 'https://en.wikipedia.org/w/api.php?', // The URL to the API. You can get this in the API page of the API you intend to consume
 						        type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
-						        data: { titles:imageName, format:"json", action:"query", uselang:"content", prop:"imageinfo", iiprop:"url", redirects:"1",  imlimit:"4" }, // Additional parameters here
+						        data: {
+									titles:imageName,
+									format:"json",
+									action:"query",
+									uselang:"content",
+									prop:"imageinfo",
+									iiprop:"url",
+									redirects:"1"
+								}, // Additional parameters here
 						        dataType: 'jsonp',
 						        success: function(data) {
-									if(exampleImages[i].src=data["query"]["pages"]["-1"]!==undefined){
-										exampleImages[i].src=data["query"]["pages"]["-1"]["imageinfo"][0]["url"];
+									console.log(data);
+									if(imageSources[i]=data["query"]["pages"]["-1"]!==undefined){
+										imageSources[i]=data["query"]["pages"]["-1"]["imageinfo"][0]["url"];
 									}
 								},
 								error: function(err) { console.log("AJAX Wikipedia images"); },
@@ -263,6 +257,11 @@ function getDefinition(word){
         },
         error: function(err) { console.log("AJAX Wikipedia word"); },
     });
+
+	//set image sources
+	for (i = 0; i < 4; i++){
+		exampleImages[i].src=imageSources[i];
+	}
 }
 
 
