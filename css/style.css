@@ -138,7 +138,7 @@ hr{
     font-size: 80px;
     pointer-events: none;
 }
-@media (max-width: 700px){
+@media (max-width: 725px){
     #srPercentage{
         position: absolute;
         visibility: hidden;

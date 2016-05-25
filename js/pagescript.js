@@ -1,3 +1,5 @@
+var api_key_flickr = "2f25bef1b043e8cb0b0380a80c4a551a";
+
 function fnv32a(str){
 	var FNV1_32A_INIT = 0x811c9dc5;
 	var hval = FNV1_32A_INIT;
@@ -183,9 +185,47 @@ function drawPieChart(coolness){
     percentage.innerHTML = coolness.toString()+'%';
 };
 
-function loadExampleImageFromGoogle(i/*Index of the example image*/){
+function loadExampleImageFromFlickr(word, i/*Index of the example image*/){
 	var exampleImages = document.getElementsByClassName("example_image");
-	console.log("Google"+i)
+
+	$.ajax({
+        url: "https://api.flickr.com/services/rest/",
+        type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
+        data: {
+			method:"flickr.photos.search",
+			format:"json",
+			api_key: api_key_flickr,
+			text: word.toLowerCase(),
+			media: "photos",
+			sort: "interestingness-desc",
+			per_page: 4,
+			license: "4,5,6,7"
+		}, // Additional parameters here
+        complete: function(response) {
+			var substr = response.responseText.substring(14, response.responseText.length-1);
+			var data = JSON.parse(substr);
+			$.ajax({
+		        url: "https://api.flickr.com/services/rest/",
+		        type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
+		        data: {
+					method:"flickr.photos.getSizes",
+					format:"json",
+					api_key: api_key_flickr,
+					photo_id: data["photos"]["photo"][i]["id"]
+				}, // Additional parameters here
+		        complete: function(response) {
+					var substr = response.responseText.substring(14, response.responseText.length-1);
+					var data = JSON.parse(substr);
+
+					if( data["sizes"]["size"][5] !== undefined ){
+						exampleImages[i].src = data["sizes"]["size"][5]["source"];
+					}else{
+						exampleImages[i].src = data["sizes"]["size"][4]["source"];
+					}
+		        },
+		    });
+        },
+    });
 }
 
 function getDefinition(word){
@@ -195,6 +235,9 @@ function getDefinition(word){
 	for (i = 0; i < 4; i++){
 		exampleImages[i].src="";
 	}
+
+	/*Set link to image source*/
+	document.getElementById("images_source").href = "http://www.flickr.com/search/?license=4%2C5%2C6%2C9%2C10&advanced=1&sort=interestingness-desc&text="+word.toLowerCase();
 
 	$.ajax({
         url: 'https://en.wikipedia.org/w/api.php?', // The URL to the API. You can get this in the API page of the API you intend to consume
@@ -240,33 +283,37 @@ function getDefinition(word){
 										uselang:"content",
 										prop:"imageinfo",
 										iiprop:"url|size",
-										redirects:"1"
+										redirects:"1",
+										iiurlheight:"400"
 									}, // Additional parameters here
 							        dataType: 'jsonp',
 							        success: function(data) {
+										console.log(data);
+
 										var singleImageQueryData = data["query"]["pages"]["-1"];
 										if(singleImageQueryData!==undefined){
 											singleImageQueryData = singleImageQueryData["imageinfo"][0]
 											var url = singleImageQueryData["url"];
+											var thumburl = singleImageQueryData["thumburl"];
 											var file_extension = url.substring(url.length-4, url.length);
 											var sizex = singleImageQueryData["width"];
 											var sizey = singleImageQueryData["height"];
 
-											if(file_extension.toLowerCase()==".svg" || sizex<100 || sizey<100){
+											if(file_extension.toLowerCase()==".svg" || sizex<200 || sizey<200){
 												/*If image not appropriate use one from google*/
-												loadExampleImageFromGoogle(i);
+												loadExampleImageFromFlickr(word, i);
 											}else{
-												exampleImages[i].src=url;
+												exampleImages[i].src=thumburl;
 											}
 										}else{
-											loadExampleImageFromGoogle(i);
+											loadExampleImageFromFlickr(word, i);
 										}
 									},
 									error: function(err) { console.log("AJAX Wikipedia images"); },
 								});
 							})(i);
 						}else{
-							loadExampleImageFromGoogle(i);
+							loadExampleImageFromFlickr(word, i);
 						}
 					}
 				}
