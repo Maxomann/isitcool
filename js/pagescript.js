@@ -24,6 +24,34 @@ function isMobileDevice(){
 	return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
 }
 
+function getInternetExplorerVersion()
+{
+    var rV = -1; // Return value assumes failure.
+
+    if (navigator.appName == 'Microsoft Internet Explorer' || navigator.appName == 'Netscape') {
+        var uA = navigator.userAgent;
+        var rE = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+
+        if (rE.exec(uA) != null) {
+            rV = parseFloat(RegExp.$1);
+        }
+        /*check for IE 11*/
+        else if (!!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+            rV = 11;
+        }
+    }
+    return rV;
+}
+
+function isInternetExplorer(){
+	var iEVersion = getInternetExplorerVersion();
+	if(iEVersion==-1){
+		return false;
+	}else{
+		return true;
+	}
+}
+
 function hideVirtualKeyboard(){
 	if(document.activeElement && isMobileDevice()){
     	document.activeElement.blur();
@@ -69,6 +97,11 @@ function onInputBoxChanged(){
 $(document).ready(function(){
 	initContactInformation();
 	$('a').smoothScroll();
+
+	/*ie is not supported warning*/
+	if(isInternetExplorer()){
+		document.getElementById('iewarning').style.display="block";
+	}
 
 	processUrlParameter();
 
@@ -288,8 +321,6 @@ function getDefinition(word){
 									}, // Additional parameters here
 							        dataType: 'jsonp',
 							        success: function(data) {
-										console.log(data);
-
 										var singleImageQueryData = data["query"]["pages"]["-1"];
 										if(singleImageQueryData!==undefined){
 											singleImageQueryData = singleImageQueryData["imageinfo"][0]
@@ -370,14 +401,16 @@ function drawHistoryChart(word, coolness){
 }
 
 function getRedditSearch(word){
-    /*$.ajax({
-        url: 'http://www.reddit.com/search.json?q='+word, // The URL to the API. You can get this in the API page of the API you intend to consume
+    $.ajax({
+        url: 'https://www.reddit.com/search.json', // The URL to the API. You can get this in the API page of the API you intend to consume
         type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
-        data: {}, // Additional parameters here
+        data: {
+			q: word,
+			limit: 5,
+			sort: "top"
+		}, // Additional parameters here
 		dataType: 'json',
         success: function(data) {
-            console.log(data);
-
             var htmlString=String();
 
             var results = data['data']['children'];
@@ -395,7 +428,7 @@ function getRedditSearch(word){
             document.getElementById('srRedditContainer').innerHTML=htmlString;
         },
         error: function(err) { console.log("AJAX Reddit"); },
-    });*/
+    });
 }
 
 
