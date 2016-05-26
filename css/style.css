@@ -15,6 +15,9 @@ footer *{
     margin-bottom: 80px;
 }
 
+header{
+    margin-bottom: 150px;
+}
 header h1{
     font-size: 18vw;
 }
@@ -33,6 +36,26 @@ h2{
 
 .cool {
     color: #F9690E;
+}
+#heading{
+    margin-bottom: 0;
+}
+#subheading{
+    font-size: 3vw;
+    color: inherit;
+    margin-top: 0;
+    font-style: italic;
+    font-weight: 300;
+}
+@media (min-width: 800px){
+    #subheading{
+        font-size: 30px;
+    }
+}
+@media (max-width: 500px){
+    #subheading{
+        font-size: 15px;
+    }
 }
 
 #beta {
