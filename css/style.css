@@ -63,6 +63,12 @@ h2{
     color: #F9690E;
 }
 
+.socialButtons{
+    width: 400px;
+    height: 20px;
+    margin: auto;
+}
+
 a{
     color: #2980b9;
     text-decoration: none;
