@@ -408,7 +408,7 @@ function getRedditSearch(word){
 			q: word,
 			limit: 5,
 			sort: "top",
-			nsfw: "no"
+			obey_over18: true
 		}, // Additional parameters here
 		dataType: 'json',
         success: function(data) {
