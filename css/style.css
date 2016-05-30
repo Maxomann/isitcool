@@ -203,6 +203,17 @@ hr{
     vertical-align: baseline !important;
 }
 
+#tryOneOfTheseContainer{
+    margin: auto;
+    max-width: 400px;
+}
+#tryOneOfTheseContainer p{
+    font-size: 19px;
+}
+#tryOneOfTheseContainer p span{
+    cursor: pointer;
+}
+
 /*IMAGE OVERLAY*/
 #imageOverlay{
     position: fixed;

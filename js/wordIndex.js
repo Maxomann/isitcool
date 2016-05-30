@@ -4,3 +4,17 @@ var wordIndex=[
     {word: "COOL", value:100},
     {word: "COOLNESS", value:100}
 ];
+
+var randomWordIndex=[
+    "school",
+    "test",
+    "california",
+    "battlefield",
+    "call of duty",
+    "football",
+    "lars",
+    "sam",
+    "kevin",
+    "reddit",
+    "food"
+];

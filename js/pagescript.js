@@ -11,6 +11,48 @@ function fnv32a(str){
 	return hval >>> 0;
 }
 
+function randomIntFromInterval(min,max)
+{
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+function getRandomWordFromIndex(){
+	var index = randomIntFromInterval(0, randomWordIndex.length-1);
+	word = randomWordIndex[index];
+	return word;
+}
+
+function initTryOneOfThese(){
+	var element = document.getElementById("tryOneOfThese");
+
+	var selectedWords = [];
+	for(var i=0; i<8; i++){
+		var found = 0;
+		var word = "";
+
+		while(found>-1){
+			word = getRandomWordFromIndex();
+			found = $.inArray(word, selectedWords);
+		}
+		selectedWords.push(word);
+	}
+
+	var innerToSet = "Or try:<i> ";
+	for(el in selectedWords){
+		var word = selectedWords[el].toLowerCase();
+		innerToSet += "<span onclick='setAndAnalyzeWord(\""+word+"\"); scrollToResult();'><u>"+word+"</u></span>, ";
+	}
+	innerToSet += "<span onclick='setAndAnalyzeWord(getRandomWordFromIndex()); scrollToResult();'><u>Random...</u></span>"
+	innerToSet += "</i>";
+
+	element.innerHTML = innerToSet;
+}
+
+function setAndAnalyzeWord(word){
+	document.getElementById('textbox').value = word.trim();
+	analyzeWord();
+}
+
 function getCoolnessForWord(word){
     var valueHash =fnv32a(word);
     if(valueHash<0)
@@ -114,8 +156,16 @@ function onInputBoxChanged(){
 	timeout = setTimeout(function(){analyzeWord()}, 1000);
 }
 
+function scrollToResult(){
+	var result = document.getElementById("searchResult");
+	if(result.style.visibility=="visible" && result.style.display!="none"){
+		$('html,body').animate({scrollTop: $('#pleaseEnter').offset().top});
+	}
+}
+
 $(document).ready(function(){
 	initContactInformation();
+	initTryOneOfThese();
 	$('a').smoothScroll();
 
 	/*ie is not supported warning*/
@@ -130,6 +180,7 @@ $(document).ready(function(){
 			clearInputBoxTimeout();
 			hideVirtualKeyboard();
             analyzeWord();
+			scrollToResult();
 		}
     });
 	$('#textbox').on('input', function() {
@@ -146,8 +197,9 @@ function processUrlParameter(){
     var word = decodeURIComponent(location.search);
     if(word!=''){
         word = word.substr(3);
-        document.getElementById('textbox').value = word.trim();
-        analyzeWord();
+		word = cleanInput(word);
+		setAndAnalyzeWord(word);
+		scrollToResult();
     }
 }
 
