@@ -24,6 +24,26 @@ function isMobileDevice(){
 	return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
 }
 
+/*IMAGE OVERLAY*/
+function isImageOverlayActivated(){
+	var overlay = document.getElementById("imageOverlay");
+	return overlay.style.display != "none";
+}
+function activateImageOverlay(src){
+	var overlay = document.getElementById("imageOverlay");
+	var image = document.getElementById("imageOverlayImage");
+
+	image.src = src;
+	overlay.style.display = "inline";
+}
+function disableImageOverlay(){
+	var overlay = document.getElementById("imageOverlay");
+	var image = document.getElementById("imageOverlayImage");
+
+	overlay.style.display = "none";
+	image.src = "";
+}
+
 function getInternetExplorerVersion()
 {
     var rV = -1; // Return value assumes failure.
@@ -114,6 +134,11 @@ $(document).ready(function(){
     });
 	$('#textbox').on('input', function() {
 	    onInputBoxChanged();
+	});
+
+
+	$('#imageOverlay').click(function(e){
+		disableImageOverlay();
 	});
 });
 
