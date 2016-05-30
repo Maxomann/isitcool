@@ -11,12 +11,19 @@ robot_tags:
 <br/>
 <br/>
 
-<span class='st_facebook_large' displayText='Facebook'></span>
-<span class='st_googleplus_large' displayText='Google +'></span>
-<span class='st_twitter_large' displayText='Tweet'></span>
-<span class='st_linkedin_large' displayText='LinkedIn'></span>
-<span class='st_pinterest_large' displayText='Pinterest'></span>
-<span class='st_email_large' displayText='Email'></span>
+<div class="socialButtons">
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_linkedin_large' displayText='LinkedIn'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+    <span class='st_email_large' displayText='Email'></span>
+</div>
+
+<div id="imageOverlay">
+    <div id="imageOverlayBackgroundOverlay"></div>
+    <img id="imageOverlayImage" src="">
+</div>
 
 <div id="searchResult">
     <hr />
@@ -42,10 +49,10 @@ robot_tags:
 
             <div class="resultBox_half">
                 <h2 class="highlight">Image</h2>
-                <img class="example_image" src="" alt="Example of Coolness">
-                <img class="example_image" src="" alt="Example of Coolness">
-                <img class="example_image" src="" alt="Example of Coolness">
-                <img class="example_image" src="" alt="Example of Coolness">
+                <img class="example_image" src="" onclick="activateImageOverlay(this.src)" alt="Example of Coolness">
+                <img class="example_image" src="" onclick="activateImageOverlay(this.src)" alt="Example of Coolness">
+                <img class="example_image" src="" onclick="activateImageOverlay(this.src)" alt="Example of Coolness">
+                <img class="example_image" src="" onclick="activateImageOverlay(this.src)" alt="Example of Coolness">
 
                 <p class="source"><a id="images_source" target="_blank" href="http://flickr.com">&nbsp;Source: flickr.com</a></p>
             </div>
