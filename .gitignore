@@ -1,6 +1,7 @@
 _site/
 .sass-cache/
 .jekyll-metadata
+.local/
 
 # =========================
 # Operating System Files

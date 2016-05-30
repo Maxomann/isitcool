@@ -407,7 +407,8 @@ function getRedditSearch(word){
         data: {
 			q: word,
 			limit: 5,
-			sort: "top"
+			sort: "top",
+			obey_over18: true
 		}, // Additional parameters here
 		dataType: 'json',
         success: function(data) {

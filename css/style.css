@@ -63,6 +63,12 @@ h2{
     color: #F9690E;
 }
 
+.socialButtons{
+    width: 400px;
+    height: 20px;
+    margin: auto;
+}
+
 a{
     color: #2980b9;
     text-decoration: none;
@@ -196,4 +202,9 @@ hr{
     border: 2px solid #F9690E;
 
     max-width: 100%;
+}
+
+.fb_iframe_widget span
+{
+    vertical-align: baseline !important;
 }
