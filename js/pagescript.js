@@ -211,6 +211,7 @@ function analyzeWord(){
 
     if(!word){
         history.pushState( {}, '', '?' );
+		ga('send', 'pageview', '/');
 		setResultBoxVisible(false);
     }
     else
