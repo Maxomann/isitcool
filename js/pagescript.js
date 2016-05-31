@@ -22,32 +22,6 @@ function getRandomWordFromIndex(){
 	return word;
 }
 
-function initTryOneOfThese(){
-	var element = document.getElementById("tryOneOfThese");
-
-	var selectedWords = [];
-	for(var i=0; i<8; i++){
-		var found = 0;
-		var word = "";
-
-		while(found>-1){
-			word = getRandomWordFromIndex();
-			found = $.inArray(word, selectedWords);
-		}
-		selectedWords.push(word);
-	}
-
-	var innerToSet = "Or try:<i> ";
-	for(el in selectedWords){
-		var word = selectedWords[el].toLowerCase();
-		innerToSet += "<span onclick='setAndAnalyzeWord(\""+word+"\"); scrollToResult();'><u>"+word+"</u></span>, ";
-	}
-	innerToSet += "<span onclick='setAndAnalyzeWord(getRandomWordFromIndex()); scrollToResult();'><u>Random...</u></span>"
-	innerToSet += "</i>";
-
-	element.innerHTML = innerToSet;
-}
-
 var dynamicExamplesNextFunctionCall;
 function dynamicExamplesNextLetter(textbox, word, i){
 	if(i>word.length){
@@ -82,8 +56,8 @@ function deactivateDynamicExamples(){
 }
 
 function setAndAnalyzeWord(word){
-	document.getElementById('textbox').value = word.trim();
-	analyzeWord();
+	document.getElementById('textbox').value = word;
+	analyzeWord(word);
 }
 
 function getCoolnessForWord(word){
@@ -186,7 +160,11 @@ function clearInputBoxTimeout(){
 }
 function onInputBoxChanged(){
 	clearInputBoxTimeout();
-	timeout = setTimeout(function(){analyzeWord()}, 1000);
+	timeout = setTimeout(function(){
+		var input = document.getElementById('textbox').value
+		var word = cleanInput(input);
+		analyzeWord(word);
+	}, 1000);
 }
 
 function scrollToResult(){
@@ -204,16 +182,18 @@ $(document).ready(function(){
 		document.getElementById('iewarning').style.display="block";
 	}
 
-	//initTryOneOfThese();
 	activateDynamicExamples();
 
 	processUrlParameter();
 
     $('#textbox').keypress(function(e){
         if(e.keyCode==13){
+			var input = document.getElementById('textbox').value
+		    var word = cleanInput(input);
+
 			clearInputBoxTimeout();
 			hideVirtualKeyboard();
-            analyzeWord();
+            analyzeWord(word);
 			scrollToResult();
 		}
     });
@@ -244,11 +224,8 @@ function processUrlParameter(){
     }
 }
 
-function analyzeWord(){
+function analyzeWord(word){
     var resultBox = document.getElementById('searchResult');
-
-    var input = document.getElementById('textbox').value
-    var word = cleanInput(input);
 
     if(!word){
         history.pushState( {}, '', '?' );
