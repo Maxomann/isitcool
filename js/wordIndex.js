@@ -16,5 +16,9 @@ var randomWordIndex=[
     "sam",
     "kevin",
     "reddit",
-    "food"
+    "food",
+    "leif",
+    "conrad",
+    "björn",
+    "isitcool.net"
 ];

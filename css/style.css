@@ -188,6 +188,18 @@ hr{
 .input_big:focus{
     outline: none;
 }
+.input_big::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: rgba(229,229,229,0.5);
+}
+.input_big::-moz-placeholder { /* Firefox 19+ */
+    color: rgba(229,229,229,0.5);
+}
+.input_big:-ms-input-placeholder { /* IE 10+ */
+    color: rgba(229,229,229,0.5);
+}
+.input_big:-moz-placeholder { /* Firefox 18- */
+    color: rgba(229,229,229,0.5);
+}
 
 .adv_wide{
     margin: 30px;

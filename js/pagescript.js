@@ -48,6 +48,39 @@ function initTryOneOfThese(){
 	element.innerHTML = innerToSet;
 }
 
+var dynamicExamplesNextFunctionCall;
+function dynamicExamplesNextLetter(textbox, word, i){
+	if(i>word.length){
+		/*Set next word*/
+		var word = getRandomWordFromIndex();
+		dynamicExamplesNextFunctionCall = setTimeout(function(){
+			dynamicExamplesNextLetter(textbox, word, 0);
+		}, 1000);
+		return;
+	}
+
+	textbox.placeholder = word.substring(0,i);
+
+	dynamicExamplesNextFunctionCall = setTimeout(function(){
+		dynamicExamplesNextLetter(textbox, word, i+1);
+	}, 100);
+}
+function activateDynamicExamples(){
+	var textbox = document.getElementById("textbox");
+	var word = getRandomWordFromIndex();
+	dynamicExamplesNextFunctionCall = setTimeout(function(){
+		dynamicExamplesNextLetter(textbox, word, 0);
+	}, 2000);
+}
+function deactivateDynamicExamples(){
+	var textbox = document.getElementById("textbox");
+	if(dynamicExamplesNextFunctionCall!==undefined){
+		clearTimeout(dynamicExamplesNextFunctionCall);
+		dynamicExamplesNextFunctionCall=undefined;
+	}
+	textbox.placeholder = "";
+}
+
 function setAndAnalyzeWord(word){
 	document.getElementById('textbox').value = word.trim();
 	analyzeWord();
@@ -165,13 +198,14 @@ function scrollToResult(){
 
 $(document).ready(function(){
 	initContactInformation();
-	initTryOneOfThese();
 	$('a').smoothScroll();
-
 	/*ie is not supported warning*/
 	if(isInternetExplorer()){
 		document.getElementById('iewarning').style.display="block";
 	}
+
+	//initTryOneOfThese();
+	activateDynamicExamples();
 
 	processUrlParameter();
 
@@ -190,6 +224,13 @@ $(document).ready(function(){
 
 	$('#imageOverlay').click(function(e){
 		disableImageOverlay();
+	});
+
+	$('#textbox').focus(function(e){
+		deactivateDynamicExamples();
+	});
+	$('#textbox').focusout(function(e){
+		activateDynamicExamples();
 	});
 });
 
