@@ -19,24 +19,27 @@ function randomIntFromInterval(min,max)
 function getRandomWordFromIndex(){
 	var index = randomIntFromInterval(0, randomWordIndex.length-1);
 	var word = randomWordIndex[index];
+	if(word===undefined){
+		console.log("Generated word is undefined. Index:"+index.toString());
+	}
 	return word;
 }
 
 var dynamicExamplesNextFunctionCall;
-function dynamicExamplesNextLetter(textbox, word, i){
-	if(i>word.length){
+function dynamicExamplesNextLetter(textbox, wordref, i){
+	if(i>wordref.length){
 		/*Set next word*/
-		word = getRandomWordFromIndex();
+		var word = getRandomWordFromIndex();
 		dynamicExamplesNextFunctionCall = setTimeout(function(){
 			dynamicExamplesNextLetter(textbox, word, 0);
 		}, 1000);
 		return;
 	}
 
-	textbox.placeholder = word.substring(0,i);
+	textbox.placeholder = wordref.substring(0,i);
 
 	dynamicExamplesNextFunctionCall = setTimeout(function(){
-		dynamicExamplesNextLetter(textbox, word, i+1);
+		dynamicExamplesNextLetter(textbox, wordref, i+1);
 	}, 100);
 }
 function activateDynamicExamples(){
