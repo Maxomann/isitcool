@@ -5,20 +5,15 @@ content_description: Find out how cool something or someone is. Isitcool.net is 
 robot_tags:
 ---
 
-<p>Please enter a word:</p>
-<input class="input_big" id="textbox" type="text" autofocus>
-<br/>
-<br/>
-<br/>
-
-<div class="socialButtons">
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_linkedin_large' displayText='LinkedIn'></span>
-    <span class='st_pinterest_large' displayText='Pinterest'></span>
-    <span class='st_email_large' displayText='Email'></span>
+<div id="textbox_container">
+    <input class="input_big" id="textbox" type="text" placeholder="">
+    <div id="dices">
+        <img src="assets/dices.svg">
+    </div>
 </div>
+<br>
+<br>
+<br>
 
 <div id="imageOverlay">
     <div id="imageOverlayBackgroundOverlay"></div>
@@ -32,6 +27,14 @@ robot_tags:
         <span class="highlight"><span id="srHeadingPercentage"></span>%</span><br/>
         (&nbsp;<span id="srHeadingComment"></span>&nbsp;)
     </p>
+    <div class="socialButtons">
+        <span class='st_facebook_large' displayText='Facebook'></span>
+        <span class='st_googleplus_large' displayText='Google +'></span>
+        <span class='st_twitter_large' displayText='Tweet'></span>
+        <span class='st_linkedin_large' displayText='LinkedIn'></span>
+        <span class='st_pinterest_large' displayText='Pinterest'></span>
+        <span class='st_email_large' displayText='Email'></span>
+    </div>
 
     <!-- <img src="/assets/testad.jpg" class="adv_wide" width="728" height="90"> -->
 

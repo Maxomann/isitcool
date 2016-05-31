@@ -11,6 +11,62 @@ function fnv32a(str){
 	return hval >>> 0;
 }
 
+function randomIntFromInterval(min,max)
+{
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+function getRandomWordFromIndex(){
+	var index = randomIntFromInterval(0, randomWordIndex.length-1);
+	var word = randomWordIndex[index];
+	if(word===undefined){
+		console.log("Generated word is undefined. Index:"+index.toString());
+	}
+	return word;
+}
+
+var dynamicExamplesNextFunctionCall;
+function dynamicExamplesNextLetter(textbox, wordref, i){
+	if(i>wordref.length){
+		/*Set next word*/
+		var word = getRandomWordFromIndex();
+		dynamicExamplesNextFunctionCall = setTimeout(function(){
+			dynamicExamplesNextLetter(textbox, word, 0);
+		}, 1000);
+		return;
+	}
+
+	textbox.placeholder = wordref.substring(0,i);
+
+	dynamicExamplesNextFunctionCall = setTimeout(function(){
+		dynamicExamplesNextLetter(textbox, wordref, i+1);
+	}, 100);
+}
+function activateDynamicExamples(){
+	var textbox = document.getElementById("textbox");
+	var word = getRandomWordFromIndex();
+	dynamicExamplesNextFunctionCall = setTimeout(function(){
+		dynamicExamplesNextLetter(textbox, word, 0);
+	}, 2000);
+}
+function deactivateDynamicExamples(){
+	var textbox = document.getElementById("textbox");
+	if(dynamicExamplesNextFunctionCall!==undefined){
+		clearTimeout(dynamicExamplesNextFunctionCall);
+		dynamicExamplesNextFunctionCall=undefined;
+	}
+	textbox.placeholder = "";
+}
+
+function setAndAnalyzeWord(word){
+	document.getElementById('textbox').value = word;
+	analyzeWord(word);
+}
+function setAndAnalyzeRandomWord(){
+	var word = getRandomWordFromIndex();
+	setAndAnalyzeWord(word);
+}
+
 function getCoolnessForWord(word){
     var valueHash =fnv32a(word);
     if(valueHash<0)
@@ -79,8 +135,10 @@ function hideVirtualKeyboard(){
 }
 
 function cleanInput(input){
-	var retVal = input.replace(/\s\s+/g, ' ');
-	retVal = retVal.trim()
+	var retVal = input;
+	retVal = retVal.replace (/#/g, '')
+	retVal = retVal.replace(/\s\s+/g, ' ');
+	retVal = retVal.trim();
 	return retVal.toUpperCase();
 }
 
@@ -111,25 +169,41 @@ function clearInputBoxTimeout(){
 }
 function onInputBoxChanged(){
 	clearInputBoxTimeout();
-	timeout = setTimeout(function(){analyzeWord()}, 1000);
+	timeout = setTimeout(function(){
+		var input = document.getElementById('textbox').value
+		var word = cleanInput(input);
+		analyzeWord(word);
+	}, 1000);
+}
+
+function scrollToResult(){
+	var result = document.getElementById("searchResult");
+	if(result.style.visibility=="visible" && result.style.display!="none"){
+		$('html,body').animate({scrollTop: $('#textbox').offset().top});
+	}
 }
 
 $(document).ready(function(){
 	initContactInformation();
 	$('a').smoothScroll();
-
 	/*ie is not supported warning*/
 	if(isInternetExplorer()){
 		document.getElementById('iewarning').style.display="block";
 	}
 
+	activateDynamicExamples();
+
 	processUrlParameter();
 
     $('#textbox').keypress(function(e){
         if(e.keyCode==13){
+			var input = document.getElementById('textbox').value
+		    var word = cleanInput(input);
+
 			clearInputBoxTimeout();
 			hideVirtualKeyboard();
-            analyzeWord();
+            analyzeWord(word);
+			scrollToResult();
 		}
     });
 	$('#textbox').on('input', function() {
@@ -140,25 +214,35 @@ $(document).ready(function(){
 	$('#imageOverlay').click(function(e){
 		disableImageOverlay();
 	});
+
+	$('#textbox').focus(function(e){
+		deactivateDynamicExamples();
+	});
+	$('#textbox').focusout(function(e){
+		activateDynamicExamples();
+	});
+
+	$('#dices').click(function(e){
+		setAndAnalyzeRandomWord();
+	});
 });
 
 function processUrlParameter(){
     var word = decodeURIComponent(location.search);
     if(word!=''){
         word = word.substr(3);
-        document.getElementById('textbox').value = word.trim();
-        analyzeWord();
+		word = cleanInput(word);
+		setAndAnalyzeWord(word);
+		scrollToResult();
     }
 }
 
-function analyzeWord(){
+function analyzeWord(word){
     var resultBox = document.getElementById('searchResult');
-
-    var input = document.getElementById('textbox').value
-    var word = cleanInput(input);
 
     if(!word){
         history.pushState( {}, '', '?' );
+		ga('send', 'pageview', '/');
 		setResultBoxVisible(false);
     }
     else
