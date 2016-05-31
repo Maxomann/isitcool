@@ -12,7 +12,6 @@ var randomWordIndex=[
     "United Kingdom",
     "France",
     "Japan",
-    "China",
     "Germany",
     "Russia",
     "Philippines",
@@ -81,5 +80,12 @@ var randomWordIndex=[
     "Joseph",
     "Brandon",
     "David",
-    "James"
+    "James",
+    /*Swag*/,
+    "#Swag",
+    "#Yolo",
+    /*Misc*/
+    "Water",
+    "Fire",
+    "Tornado"
 ];

@@ -18,7 +18,7 @@ function randomIntFromInterval(min,max)
 
 function getRandomWordFromIndex(){
 	var index = randomIntFromInterval(0, randomWordIndex.length-1);
-	word = randomWordIndex[index];
+	var word = randomWordIndex[index];
 	return word;
 }
 
@@ -26,7 +26,7 @@ var dynamicExamplesNextFunctionCall;
 function dynamicExamplesNextLetter(textbox, word, i){
 	if(i>word.length){
 		/*Set next word*/
-		var word = getRandomWordFromIndex();
+		word = getRandomWordFromIndex();
 		dynamicExamplesNextFunctionCall = setTimeout(function(){
 			dynamicExamplesNextLetter(textbox, word, 0);
 		}, 1000);
@@ -60,16 +60,8 @@ function setAndAnalyzeWord(word){
 	analyzeWord(word);
 }
 function setAndAnalyzeRandomWord(){
-	$.ajax({
-        type: "GET",
-    	url: "http://randomword.setgetgo.com/get.php",
-        dataType: "jsonp",
-        success:function(data){
-			console.log(data);
-			setAndAnalyzeWord(data.Word.toString());
-			scrollToResult();
-		}
-    });
+	var word = getRandomWordFromIndex();
+	setAndAnalyzeWord(word);
 }
 
 function getCoolnessForWord(word){
@@ -140,8 +132,10 @@ function hideVirtualKeyboard(){
 }
 
 function cleanInput(input){
-	var retVal = input.replace(/\s\s+/g, ' ');
-	retVal = retVal.trim()
+	var retVal = input;
+	retVal = retVal.replace (/#/g, '')
+	retVal = retVal.replace(/\s\s+/g, ' ');
+	retVal = retVal.trim();
 	return retVal.toUpperCase();
 }
 
