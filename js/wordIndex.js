@@ -28,7 +28,6 @@ var randomWordIndex=[
     /*Food*/
     "Popcorn",
     "Chips",
-    "Poutine",
     "Tacos",
     "Marzipan",
     "French Toast",
