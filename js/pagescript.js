@@ -59,6 +59,18 @@ function setAndAnalyzeWord(word){
 	document.getElementById('textbox').value = word;
 	analyzeWord(word);
 }
+function setAndAnalyzeRandomWord(){
+	$.ajax({
+        type: "GET",
+    	url: "http://randomword.setgetgo.com/get.php",
+        dataType: "jsonp",
+        success:function(data){
+			console.log(data);
+			setAndAnalyzeWord(data.Word.toString());
+			scrollToResult();
+		}
+    });
+}
 
 function getCoolnessForWord(word){
     var valueHash =fnv32a(word);
@@ -170,7 +182,7 @@ function onInputBoxChanged(){
 function scrollToResult(){
 	var result = document.getElementById("searchResult");
 	if(result.style.visibility=="visible" && result.style.display!="none"){
-		$('html,body').animate({scrollTop: $('#pleaseEnter').offset().top});
+		$('html,body').animate({scrollTop: $('#textbox').offset().top});
 	}
 }
 
@@ -211,6 +223,10 @@ $(document).ready(function(){
 	});
 	$('#textbox').focusout(function(e){
 		activateDynamicExamples();
+	});
+
+	$('#dices').click(function(e){
+		setAndAnalyzeRandomWord();
 	});
 });
 
