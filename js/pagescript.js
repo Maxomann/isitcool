@@ -43,6 +43,8 @@ function dynamicExamplesNextLetter(textbox, wordref, i){
 	}, 100);
 }
 function activateDynamicExamples(){
+	deactivateDynamicExamples();
+
 	var textbox = document.getElementById("textbox");
 	dynamicExamplesNextFunctionCall = setTimeout(function(){
 		dynamicExamplesNextLetter(textbox, "Please enter a word...", 0);
@@ -173,6 +175,10 @@ function onInputBoxChanged(){
 		var input = document.getElementById('textbox').value
 		var word = cleanInput(input);
 		analyzeWord(word);
+
+		if(word==''){
+			$("#textbox").blur();
+		}
 	}, 1000);
 }
 
