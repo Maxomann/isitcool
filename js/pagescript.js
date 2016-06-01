@@ -43,10 +43,11 @@ function dynamicExamplesNextLetter(textbox, wordref, i){
 	}, 100);
 }
 function activateDynamicExamples(){
+	deactivateDynamicExamples();
+
 	var textbox = document.getElementById("textbox");
-	var word = getRandomWordFromIndex();
 	dynamicExamplesNextFunctionCall = setTimeout(function(){
-		dynamicExamplesNextLetter(textbox, word, 0);
+		dynamicExamplesNextLetter(textbox, "Please enter a word...", 0);
 	}, 2000);
 }
 function deactivateDynamicExamples(){
@@ -61,6 +62,7 @@ function deactivateDynamicExamples(){
 function setAndAnalyzeWord(word){
 	document.getElementById('textbox').value = word;
 	analyzeWord(word);
+	scrollToResult();
 }
 function setAndAnalyzeRandomWord(){
 	var word = getRandomWordFromIndex();
@@ -173,6 +175,10 @@ function onInputBoxChanged(){
 		var input = document.getElementById('textbox').value
 		var word = cleanInput(input);
 		analyzeWord(word);
+
+		if(word==''){
+			$("#textbox").blur();
+		}
 	}, 1000);
 }
 

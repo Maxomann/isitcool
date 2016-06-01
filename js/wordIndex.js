@@ -81,7 +81,7 @@ var randomWordIndex=[
     "Brandon",
     "David",
     "James",
-    /*Swag*/,
+    /*Swag*/
     "#Swag",
     "#Yolo",
     /*Misc*/

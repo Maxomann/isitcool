@@ -3,16 +3,14 @@ body{
     text-align: center;
     color: #2980b9;
     background-color: #2c3e50;
-    /*overflow-x: hidden;*/
+    background-image: url(http://api.thumbr.it/whitenoise-361x370.png?background=2c3e50ff&noise=233140&density=75&opacity=20);
+    background-repeat: repeat;
+    overflow-x: hidden;
 }
 
 footer *{
     margin-top: 0;
     margin-bottom: 0;
-}
-
-#content{
-    margin-bottom: 80px;
 }
 
 header{
@@ -82,8 +80,10 @@ a.nohovereffect{
 #searchResult{
     visibility: hidden;
     opacity:0;
-    margin-top: 100px;
+    margin-top: 50px;
     transition:opacity 1s linear;
+
+    background-color: #2c3e50;
 }
 
 .example_image{
@@ -103,7 +103,7 @@ a.nohovereffect{
     width: 700px;
     max-width: 100%;
     /*min-height: 400px;*/
-    margin: 40px 20px 40px 20px;
+    margin: 40px 20px 80px 20px;
 
     background-color: #2c3e50;/*#2c3e50*/
     flex-basis: auto;
@@ -144,28 +144,44 @@ hr{
     border-color: #34495E;
 }
 
+#topline{
+
+}
+
 #srHeading{
     font-size: 32px;
     font-weight: bold;
+
+    margin: 32px 0 32px 0;
 }
-#srHeading div{
-    display: inline;
+
+.relative{
+    position: relative;
 }
 
 #srPercentage{
+    position: absolute;
+    margin: auto;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
     color: #F9690E;
-    position: relative;
-    bottom:242px;
-    margin: 0;
     font-weight: bold;
     font-size: 80px;
     pointer-events: none;
 }
-@media (max-width: 725px){
+@media (max-width:725px) {
     #srPercentage{
-        position: absolute;
-        visibility: hidden;
+        font-size: 11vw;
     }
+}
+#srPercentage p{
+    display: inline;
+
+    position: absolute;
+    width: 100px;
+    height: 100px;
 }
 
 .input_big{
@@ -205,6 +221,8 @@ hr{
     width: 90%;
     max-width: 636px;
     height: 60px;
+
+    margin-bottom: 40px;
 }
 #dices{
     position: absolute;
@@ -232,6 +250,12 @@ hr{
     border: 2px solid #F9690E;
 
     max-width: 100%;
+}
+.adv_responsive{
+    width: 90%;
+    max-width: 700px;
+    min-height: 80px;
+    margin: auto;
 }
 
 .fb_iframe_widget span
