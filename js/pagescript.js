@@ -61,6 +61,7 @@ function deactivateDynamicExamples(){
 function setAndAnalyzeWord(word){
 	document.getElementById('textbox').value = word;
 	analyzeWord(word);
+	scrollToResult();
 }
 function setAndAnalyzeRandomWord(){
 	var word = getRandomWordFromIndex();
