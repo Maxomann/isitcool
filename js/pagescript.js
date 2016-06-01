@@ -61,6 +61,7 @@ function deactivateDynamicExamples(){
 
 function setAndAnalyzeWord(word){
 	document.getElementById('textbox').value = word;
+	word = cleanInput(word);
 	analyzeWord(word);
 	scrollToResult();
 }
