@@ -2,7 +2,18 @@ var wordIndex=[
     {word: "ISITCOOL.NET", value:100},
     {word: "ISITCOOL", value:100},
     {word: "COOL", value:100},
-    {word: "COOLNESS", value:100}
+    {word: "COOLNESS", value:100},
+    {word: "3.1", value:3.14},
+    {word: "3.14", value:3.14},
+    {word: "3.141", value:3.14},
+    {word: "3.1415", value:3.14},
+    {word: "3.14159", value:3.14},
+    {word: "3.141592", value:3.14},
+    {word: "3.1415926", value:3.14},
+    {word: "3.14159265", value:3.14},
+    {word: "3.141592653", value:3.14},
+    {word: "3.1415926535", value:3.14},
+    {word: "3.14159265359", value:3.14}
 ];
 
 var randomWordIndex=[
