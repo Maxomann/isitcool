@@ -21,7 +21,7 @@ robot_tags:
 </div>
 
 <div id="searchResult">
-    <hr />
+    <hr id="topline"/>
     <p id="srHeading">
         '<span id="srHeadingWord"></span>' has a Coolness Level of:<br/>
         <span class="highlight"><span id="srHeadingPercentage"></span>%</span><br/>
@@ -40,8 +40,12 @@ robot_tags:
 
     <div id="resultContainer">
         <div class="resultBox">
-            <canvas id="srPieChart" width="700" height="400"></canvas>
-            <p id="srPercentage" class="highlight"></p>
+            <div class="relative">
+                <canvas id="srPieChart" width="700" height="400"></canvas>
+                <div id="srPercentage">
+                    <p id="" class="highlight"></p>
+                </div>
+            </div>
         </div>
 
         <div class="resultBox">

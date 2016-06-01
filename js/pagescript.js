@@ -44,9 +44,8 @@ function dynamicExamplesNextLetter(textbox, wordref, i){
 }
 function activateDynamicExamples(){
 	var textbox = document.getElementById("textbox");
-	var word = getRandomWordFromIndex();
 	dynamicExamplesNextFunctionCall = setTimeout(function(){
-		dynamicExamplesNextLetter(textbox, word, 0);
+		dynamicExamplesNextLetter(textbox, "Please enter a word...", 0);
 	}, 2000);
 }
 function deactivateDynamicExamples(){

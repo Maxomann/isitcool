@@ -103,7 +103,7 @@ a.nohovereffect{
     width: 700px;
     max-width: 100%;
     /*min-height: 400px;*/
-    margin: 40px 20px 40px 20px;
+    margin: 40px 20px 80px 20px;
 
     background-color: #2c3e50;/*#2c3e50*/
     flex-basis: auto;
@@ -144,28 +144,44 @@ hr{
     border-color: #34495E;
 }
 
+#topline{
+
+}
+
 #srHeading{
     font-size: 32px;
     font-weight: bold;
+
+    margin: 32px 0 32px 0;
 }
-#srHeading div{
-    display: inline;
+
+.relative{
+    position: relative;
 }
 
 #srPercentage{
+    position: absolute;
+    margin: auto;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
     color: #F9690E;
-    position: relative;
-    bottom:242px;
-    margin: 0;
     font-weight: bold;
     font-size: 80px;
     pointer-events: none;
 }
-@media (max-width: 725px){
+@media (max-width:725px) {
     #srPercentage{
-        position: absolute;
-        visibility: hidden;
+        font-size: 11vw;
     }
+}
+#srPercentage p{
+    display: inline;
+
+    position: absolute;
+    width: 100px;
+    height: 100px;
 }
 
 .input_big{
