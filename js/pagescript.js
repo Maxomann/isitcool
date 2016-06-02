@@ -86,42 +86,54 @@ function isMobileDevice(){
 /*IMAGE OVERLAY*/
 function isImageOverlayActivated(){
 	var overlay = document.getElementById("imageOverlay");
-	return overlay.style.display != "none";
+	return overlay.style.visibility != "hidden";
 }
 function activateImageOverlay(src){
 	var overlay = document.getElementById("imageOverlay");
 	var image = document.getElementById("imageOverlayImage");
 
 	image.src = src;
-	overlay.style.display = "inline";
+	overlay.style.visibility = "visible";
+	overlay.style.opacity = 1;
 }
 function disableImageOverlay(){
 	var overlay = document.getElementById("imageOverlay");
 	var image = document.getElementById("imageOverlayImage");
 
-	overlay.style.display = "none";
-	image.src = "";
+	overlay.style.opacity = 0;
+	setTimeout(function(){
+		overlay.style.visibility = "hidden";
+		image.src = "";
+	}, 100);
 }
 
 function switchVotePopup(){
 	var vote_popup = document.getElementById("vote_popup");
+	var vote_overlay = document.getElementById("vote_popup_overlay");
 	if( vote_popup.style.visibility == "visible"){
+		vote_overlay.style.opacity = 0;
 		vote_popup.style.opacity = 0;
 		setTimeout(function(){
 			var vote_popup = document.getElementById("vote_popup");
+			vote_overlay.style.visibility = "hidden";
 			vote_popup.style.visibility = "hidden";
 		}, 100);
 	}else{
+		vote_overlay.style.visibility = "visible";
 		vote_popup.style.visibility = "visible";
+		vote_overlay.style.opacity = 1;
 		vote_popup.style.opacity = 1;
 	}
 }
 function hideVotePopup(){
 	var vote_popup = document.getElementById("vote_popup");
+	var vote_overlay = document.getElementById("vote_popup_overlay");
 	if( vote_popup.style.visibility == "visible"){
 		vote_popup.style.opacity = 0;
+		vote_overlay.style.opacity = 0;
 		setTimeout(function(e){
 			var vote_popup = document.getElementById("vote_popup");
+			vote_overlay.style.visibility = "hidden";
 			vote_popup.style.visibility = "hidden";
 		}, 100);
 	}
@@ -133,9 +145,6 @@ function voteUp(){
 function voteDown(){
 	console.log("vote: down");
 	hideVotePopup();
-}
-function initVoteButtonColorChange(){
-
 }
 
 function getInternetExplorerVersion()
@@ -248,7 +257,7 @@ $(document).ready(function(){
 			scrollToResult();
 		}
     });
-	$('#textbox').on('input', function() {
+	$('#textbox').on('input', function(e) {
 	    onInputBoxChanged();
 	});
 
@@ -265,6 +274,10 @@ $(document).ready(function(){
 
 	$('#dices').click(function(e){
 		setAndAnalyzeRandomWord();
+	});
+
+	$('#vote_popup_overlay').click(function(e){
+		hideVotePopup();
 	});
 });
 
