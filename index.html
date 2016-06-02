@@ -33,13 +33,25 @@ robot_tags:
 <div id="searchResult">
     <hr/>
     <div id="textresult">
-        <div class="vote" id="downvote"><p>-</p></div>
-        <div class="vote" id="upvote"><p>+</p></div>
         <p id="srHeading">
             '<span id="srHeadingWord"></span>' has a Coolness Level of:<br/>
             <span class="highlight"><span id="srHeadingPercentage"></span>%</span><br/>
             (&nbsp;<span id="srHeadingComment"></span>&nbsp;)
         </p>
+    </div>
+    <div id="vote_switch" onclick="switchVotePopup()"><p>-&nbsp;&nbsp;&nbsp;&nbsp;Vote&nbsp;&nbsp;&nbsp;&nbsp;+</p></div>
+    <div id="vote_popup_container">
+        <div id="vote_popup">
+            <div class="vote_button_container" id="downvote" onclick="voteDown()">
+                <p>Down</p>
+                <div class="vote_button"><p>-</p></div>
+            </div>
+            <div class="vote_button_container" id="upvote" onclick="voteUp()">
+                <p>Up</p>
+                <div class="vote_button"><p>+</p></div>
+            </div>
+            <p id="vote_popup_hide" onclick="hideVotePopup()">Hide</p>
+        </div>
     </div>
     <div class="socialButtons">
         <span class='st_facebook_large' displayText='Facebook'></span>

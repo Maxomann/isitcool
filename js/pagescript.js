@@ -103,6 +103,41 @@ function disableImageOverlay(){
 	image.src = "";
 }
 
+function switchVotePopup(){
+	var vote_popup = document.getElementById("vote_popup");
+	if( vote_popup.style.visibility == "visible"){
+		vote_popup.style.opacity = 0;
+		setTimeout(function(){
+			var vote_popup = document.getElementById("vote_popup");
+			vote_popup.style.visibility = "hidden";
+		}, 100);
+	}else{
+		vote_popup.style.visibility = "visible";
+		vote_popup.style.opacity = 1;
+	}
+}
+function hideVotePopup(){
+	var vote_popup = document.getElementById("vote_popup");
+	if( vote_popup.style.visibility == "visible"){
+		vote_popup.style.opacity = 0;
+		setTimeout(function(e){
+			var vote_popup = document.getElementById("vote_popup");
+			vote_popup.style.visibility = "hidden";
+		}, 100);
+	}
+}
+function voteUp(){
+	console.log("vote: up");
+	hideVotePopup();
+}
+function voteDown(){
+	console.log("vote: down");
+	hideVotePopup();
+}
+function initVoteButtonColorChange(){
+
+}
+
 function getInternetExplorerVersion()
 {
     var rV = -1; // Return value assumes failure.
@@ -216,7 +251,6 @@ $(document).ready(function(){
 	$('#textbox').on('input', function() {
 	    onInputBoxChanged();
 	});
-
 
 	$('#imageOverlay').click(function(e){
 		disableImageOverlay();
