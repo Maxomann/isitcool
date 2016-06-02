@@ -77,6 +77,46 @@ a.nohovereffect{
     color:inherit;
 }
 
+#srHeading{
+    font-size: 32px;
+    font-weight: bold;
+
+    margin: 32px auto 32px auto;
+    max-width: 60%;
+}
+
+#textresult{
+    position: relative;
+    max-width: 700px;
+    margin: auto;
+}
+
+/*Vote*/
+.vote{
+    position: absolute;
+
+    width: 50px;
+    height: 50px;
+    background-color: #233140;
+    border-radius: 25px;
+    margin: auto;
+    top:50%;
+
+    transform: translateY(-50%);
+}
+.vote p{
+    margin: auto;
+    color: #F9690E;
+    font-size: 65px;
+    transform: translateY(-13px);
+}
+#downvote{
+    left:0;
+}
+#upvote{
+    right: 0;
+}
+
 #searchResult{
     visibility: hidden;
     opacity:0;
@@ -142,17 +182,6 @@ hr{
     color: #34495E;
     background-color: #34495E;
     border-color: #34495E;
-}
-
-#topline{
-
-}
-
-#srHeading{
-    font-size: 32px;
-    font-weight: bold;
-
-    margin: 32px 0 32px 0;
 }
 
 .relative{
