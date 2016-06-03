@@ -235,6 +235,7 @@ function scrollToResult(){
 }
 
 $(document).ready(function(){
+	initCookieInfo();
 	initContactInformation();
 	$('a').smoothScroll();
 	/*ie is not supported warning*/
@@ -595,6 +596,18 @@ function getRedditSearch(word){
     });
 }
 
+//Cookies
+var cookie_info_name = 'isitcool_cookieinfo'
+function initCookieInfo(){
+	var val = Cookies.get(cookie_info_name);
+	if(val===undefined){
+		cookie_info_container.style.display = 'block';
+	}
+}
+function closeCookieInfo(){
+	Cookies.set(cookie_info_name, 'true');
+	cookie_info_container.style.display = 'none';
+}
 
 // IMPRESSUM
 function initContactInformation(){

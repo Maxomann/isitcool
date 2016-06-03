@@ -415,3 +415,31 @@ hr{
     width: 100%;
     max-width: 800px;
 }
+
+/*Cookies*/
+#cookie_info_container{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    color: #F9690E;
+    background-color: #233140;
+
+    z-index: 10;
+}
+#cookie_info{
+    margin-left: 15px;
+    margin-right: 15px;
+}
+#cookie_info_button{
+    color: #233140;
+    background-color: #F9690E;
+    border-radius: 5px;
+    width: 80px;
+    margin: auto;
+}
+#cookie_info_button:hover{
+    cursor: pointer;
+}
