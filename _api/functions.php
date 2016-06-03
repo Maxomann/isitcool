@@ -37,6 +37,7 @@ function getCoolnessForWord($word){
     if( !$conn ){
         die('Could not connect: ' . mysql_error());
     }
+    mysql_select_db()
     $sql = "SELECT value FROM words WHERE word = " + word;
     print_r($conn);
     $sqlResult = $conn->query($sql);
