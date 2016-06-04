@@ -605,7 +605,7 @@ function initCookieInfo(){
 	}
 }
 function closeCookieInfo(){
-	Cookies.set(cookie_info_name, 'true');
+	Cookies.set(cookie_info_name, 'true', { expires: 999 });
 	cookie_info_container.style.display = 'none';
 }
 
