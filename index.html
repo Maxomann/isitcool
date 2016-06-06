@@ -30,75 +30,81 @@ robot_tags:
     </script>
 </div>
 
-<div id="searchResult">
-    <hr/>
-    <div id="textresult">
-        <p id="srHeading">
-            '<span id="srHeadingWord"></span>' has a Coolness Level of:<br/>
-            <span class="highlight"><span id="srHeadingPercentage"></span>%</span><br/>
-            (&nbsp;<span id="srHeadingComment"></span>&nbsp;)
-        </p>
-    </div>
-    <div id="vote_switch" onclick="switchVotePopup()"><p>-&nbsp;&nbsp;&nbsp;&nbsp;Vote&nbsp;&nbsp;&nbsp;&nbsp;+</p></div>
-    <div id="vote_popup_overlay"></div>
-    <div id="vote_popup_container">
-        <div id="vote_popup">
-            <div class="vote_button_container" id="downvote" onclick="voteDown()">
-                <p>Down</p>
-                <div class="vote_button"><p>-</p></div>
-            </div>
-            <div class="vote_button_container" id="upvote" onclick="voteUp()">
-                <p>Up</p>
-                <div class="vote_button"><p>+</p></div>
-            </div>
-            <p id="vote_popup_hide" onclick="hideVotePopup()">Hide</p>
-        </div>
-    </div>
-    <div class="socialButtons">
-        <span class='st_facebook_large' displayText='Facebook'></span>
-        <span class='st_googleplus_large' displayText='Google +'></span>
-        <span class='st_twitter_large' displayText='Tweet'></span>
-        <span class='st_linkedin_large' displayText='LinkedIn'></span>
-        <span class='st_pinterest_large' displayText='Pinterest'></span>
-        <span class='st_email_large' displayText='Email'></span>
-    </div>
 
-    <div id="resultContainer">
-        <div class="resultBox">
-            <div class="relative">
-                <canvas id="srPieChart" width="700" height="400"></canvas>
-                <div id="srPercentage">
-                    <p id="" class="highlight"></p>
+<div id="searchResult_container">
+    <hr/>
+    <div id="loadingBanner">
+        <p class="highlight">Loading ...</p>
+    </div>
+    <div id="searchResult">
+        <div id="textresult">
+            <p id="srHeading">
+                '<span id="srHeadingWord"></span>' has a Coolness Level of:<br/>
+                <span class="highlight"><span id="srHeadingPercentage"></span>%</span><br/>
+                (&nbsp;<span id="srHeadingComment"></span>&nbsp;)
+            </p>
+        </div>
+        <div id="vote_switch" onclick="switchVotePopup()"><p>-&nbsp;&nbsp;&nbsp;&nbsp;Vote&nbsp;&nbsp;&nbsp;&nbsp;+</p></div>
+        <div id="vote_popup_overlay"></div>
+        <div id="vote_popup_container">
+            <div id="vote_popup">
+                <div class="vote_button_container" id="downvote" onclick="voteDown()">
+                    <p>Down</p>
+                    <div class="vote_button"><p>-</p></div>
+                </div>
+                <div class="vote_button_container" id="upvote" onclick="voteUp()">
+                    <p>Up</p>
+                    <div class="vote_button"><p>+</p></div>
+                </div>
+                <p id="vote_popup_hide" onclick="hideVotePopup()">Hide</p>
+            </div>
+        </div>
+        <div class="socialButtons">
+            <span class='st_facebook_large' displayText='Facebook'></span>
+            <span class='st_googleplus_large' displayText='Google +'></span>
+            <span class='st_twitter_large' displayText='Tweet'></span>
+            <span class='st_linkedin_large' displayText='LinkedIn'></span>
+            <span class='st_pinterest_large' displayText='Pinterest'></span>
+            <span class='st_email_large' displayText='Email'></span>
+        </div>
+
+        <div id="resultContainer">
+            <div class="resultBox">
+                <div class="relative">
+                    <canvas id="srPieChart" width="700" height="400"></canvas>
+                    <div id="srPercentage">
+                        <p id="" class="highlight"></p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="resultBox">
-            <div class="resultBox_half">
-                <h2>Information</h2>
-                <p id="definition"></p>
+            <div class="resultBox">
+                <div class="resultBox_half">
+                    <h2>Information</h2>
+                    <p id="definition"></p>
+                </div>
+
+                <div class="resultBox_half">
+                    <h2 class="highlight">Image</h2>
+                    <img class="example_image" src="" onclick="activateImageOverlay(this.src)" alt="Example of Coolness">
+                    <img class="example_image" src="" onclick="activateImageOverlay(this.src)" alt="Example of Coolness">
+                    <img class="example_image" src="" onclick="activateImageOverlay(this.src)" alt="Example of Coolness">
+                    <img class="example_image" src="" onclick="activateImageOverlay(this.src)" alt="Example of Coolness">
+
+                    <p class="source"><a id="images_source" target="_blank" href="http://flickr.com">&nbsp;Source: flickr.com</a></p>
+                </div>
             </div>
 
-            <div class="resultBox_half">
-                <h2 class="highlight">Image</h2>
-                <img class="example_image" src="" onclick="activateImageOverlay(this.src)" alt="Example of Coolness">
-                <img class="example_image" src="" onclick="activateImageOverlay(this.src)" alt="Example of Coolness">
-                <img class="example_image" src="" onclick="activateImageOverlay(this.src)" alt="Example of Coolness">
-                <img class="example_image" src="" onclick="activateImageOverlay(this.src)" alt="Example of Coolness">
-
-                <p class="source"><a id="images_source" target="_blank" href="http://flickr.com">&nbsp;Source: flickr.com</a></p>
+            <div class="resultBox">
+                <h2>Coolness over Time</h2>
+                <canvas id="srHistoryChart" width="700" height="340"></canvas>
             </div>
-        </div>
 
-        <div class="resultBox">
-            <h2>Coolness over Time</h2>
-            <canvas id="srHistoryChart" width="700" height="340"></canvas>
-        </div>
-
-        <div class="resultBox">
-            <h2>What does the internet say?</h2>
-            <div id="srRedditContainer"></div>
-            <p class="source"><a target="_blank" href="http://reddit.com">&nbsp;Source: Reddit.com</a></p>
+            <div class="resultBox">
+                <h2>What does the internet say?</h2>
+                <div id="srRedditContainer"></div>
+                <p class="source"><a target="_blank" href="http://reddit.com">&nbsp;Source: Reddit.com</a></p>
+            </div>
         </div>
     </div>
 </div>

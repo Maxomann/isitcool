@@ -52,7 +52,6 @@ function setAndAnalyzeWord(word){
 	document.getElementById('textbox').value = word;
 	word = cleanInput(word);
 	analyzeWord(word);
-	scrollToResult();
 }
 function setAndAnalyzeRandomWord(){
 	var word = getRandomWordFromIndex();
@@ -169,15 +168,33 @@ function cleanInput(input){
 	return retVal.toLowerCase();
 }
 
-function setResultBoxVisible(bool){
+function setResultBoxVisibleState(state){
+	//state: 0 - invisible, 1 - loading, 2- result
 	var resultBox = document.getElementById('searchResult');
+	var resultBox_container = document.getElementById('searchResult_container');
+	var resultBox_loading = document.getElementById('loadingBanner');
 
-	if(bool){
-		resultBox.style.visibility = 'visible';
-        resultBox.style.opacity = 1;
-	}else{
-		resultBox.style.visibility = 'hidden';
+	if(state == 0){
+		resultBox_container.style.display = 'none';
+		resultBox.style.display = 'none';
+		resultBox_loading.style.display = 'none';
+		resultBox_container.style.opacity = 0;
         resultBox.style.opacity = 0;
+		resultBox_loading.style.opacity = 0;
+	}else if( state == 1 ){
+		resultBox_container.style.display = 'block';
+		resultBox.style.display = 'none';
+		resultBox_loading.style.display = 'block';
+		resultBox_container.style.opacity = 1;
+        resultBox.style.opacity = 0;
+		resultBox_loading.style.opacity = 1;
+	}else if( state == 2 ){
+		resultBox_container.style.display = 'block';
+		resultBox.style.display = 'block';
+		resultBox_loading.style.display = 'none';
+		resultBox_container.style.opacity = 1;
+        resultBox.style.opacity = 1;
+		resultBox_loading.style.opacity = 0;
 	}
 }
 
@@ -196,19 +213,21 @@ function clearInputBoxTimeout(){
 }
 function onInputBoxChanged(){
 	clearInputBoxTimeout();
+
+	var input = document.getElementById('textbox').value
+	var word = cleanInput(input);
+	if(word==''){
+		$("#textbox").blur();
+	}
+
 	timeout = setTimeout(function(){
 		var input = document.getElementById('textbox').value
 		var word = cleanInput(input);
 		analyzeWord(word);
-
-		if(word==''){
-			$("#textbox").blur();
-		}
 	}, 1000);
 }
 
 function scrollToResult(){
-	var result = document.getElementById("searchResult");
 	$('html,body').animate({scrollTop: $('#textbox').offset().top});
 }
 
@@ -233,7 +252,6 @@ $(document).ready(function(){
 			clearInputBoxTimeout();
 			hideVirtualKeyboard();
             analyzeWord(word);
-			scrollToResult();
 		}
     });
 	$('#textbox').on('input', function(e) {
@@ -258,6 +276,19 @@ $(document).ready(function(){
 	$('#vote_popup_overlay').click(function(e){
 		hideVotePopup();
 	});
+
+	$(document).keydown(function(e){
+	    if(e.keyCode == 8) {
+			$("#textbox").val('');
+			if(!($('#textbox').is(":focus"))){
+				e.preventDefault();
+	        	$("#textbox").focus();
+			}
+	    }
+	});
+	$(document).keypress(function(e) {
+		$("#textbox").focus();
+	});
 });
 
 function processUrlParameter(){
@@ -266,7 +297,6 @@ function processUrlParameter(){
         word = word.substr(3);
 		word = cleanInput(word);
 		setAndAnalyzeWord(word);
-		scrollToResult();
     }
 }
 
@@ -276,12 +306,13 @@ function analyzeWord(word){
     if(!word){
         history.pushState( {}, '', '?' );
 		ga('send', 'pageview', '/');
-		setResultBoxVisible(false);
+		setResultBoxVisibleState(0);
     }
     else
     {
         history.pushState( {}, '', '?q='+encodeURIComponent(word.toLowerCase()) );
 		ga('send', 'pageview', '/?q='+word.toLowerCase());
+		setResultBoxVisibleState(1);
 
 		$.ajax({
 			url: 'http://isitcool.bplaced.net/coolness.php',
@@ -334,13 +365,14 @@ function analyzeWord(word){
 				}
 				catch(e){}
 
-				setResultBoxVisible(true);
+				setResultBoxVisibleState(2);
 			},
 			error:function(data){
 				document.getElementById('srHeadingPercentage').innerHTML = "Error: Cannot connect to server";
 			}
 		});
     }
+	scrollToResult();
 };
 
 var _pieChart;
