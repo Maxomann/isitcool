@@ -24,11 +24,19 @@ function generateCoolnessForWord($word){
     $as_string = (string)$hash;
     $length = strlen($as_string);
     $retVal = substr($as_string, $length-2, $length);
-    return intval($retVal);
+
+    $as_int = intval($retVal);
+    while( $as_int < 30 ){
+        $as_int += 10;
+    }
+    while( $as_int > 70 ){
+        $as_int -= 10;
+    }
+    return $as_int;
 }
 
-function tryInsertWordIntoDb_default($word, $coolness){
-    $shouldInsert = false;
+function doesWordExistInWordlist($word){
+    $retVal = true;
 
     $conn = new mysqli( Constants::mySql_host,
                         Constants::mySql_user,
@@ -49,23 +57,34 @@ function tryInsertWordIntoDb_default($word, $coolness){
         die('Could not get data: ' . $stmt->error);
     }
     else if( $stmt->num_rows<1 ){
-        $shouldInsert=true;
+        $retVal=false;
     }
-
     $stmt->free_result();
     $stmt->close();
 
-    if($shouldInsert){
+    return $retVal;
+}
+
+function tryInsertWordIntoDb_default($word, $coolness){
+    if(!doesWordExistInWordlist($word)){
+        $conn = new mysqli( Constants::mySql_host,
+                            Constants::mySql_user,
+                            Constants::mySql_key,
+                            Constants::mySql_dbname
+                        );
+
         $stmt = $conn->prepare( "INSERT INTO words (word, value, value_default, upvotes, downvotes) VALUES ( ?, ?, ?, '0', '0')" );
         $stmt->bind_param("sii", $word, $coolness, $coolness);
         $stmt->execute();
         if( $stmt->error ){
             die('Could not enter data: ' . mysql_error());
         }
-    }
 
-    $stmt->close();
-    $conn->close();
+        $stmt->close();
+        $conn->close();
+        return true;
+    }
+    return false;
 }
 
 function getCoolnessForWord($word){
