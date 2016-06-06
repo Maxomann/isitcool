@@ -1,11 +1,5 @@
 <?php
-class Constants
-{
-    const mySql_host = "localhost";
-    const mySql_user = "isitcool";
-    const mySql_key = "?4n2+A@-X:PyKp`Q>Gs}nf*6";
-    const mySql_dbname = 'isitcool';
-}
+include 'secretConstants.php';
 
 function cleanInput($input/*String*/){
     $input = filter_var($input, FILTER_SANITIZE_STRING);
