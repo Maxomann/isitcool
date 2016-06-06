@@ -1,13 +1,14 @@
 <?php
 class Constants
 {
-    const mySql_host = "localhost:3036";
+    const mySql_host = "localhost";
     const mySql_user = "isitcool";
     const mySql_key = "?4n2+A@-X:PyKp`Q>Gs}nf*6";
     const mySql_dbname = 'isitcool';
 }
 
 function cleanInput($input/*String*/){
+    $input = filter_var($input, FILTER_SANITIZE_STRING);
     $input = strtolower($input);
     return trim($input);
 }
@@ -35,49 +36,72 @@ function generateCoolnessForWord($word){
 function tryInsertWordIntoDb_default($word, $coolness){
     $shouldInsert = false;
 
-    $conn = mysql_connect(Constants::mySql_host, Constants::mySql_user, Constants::mySql_key);
-    if( !$conn ){
-        die('Could not connect: ' . mysql_error());
+    $conn = new mysqli( Constants::mySql_host,
+                        Constants::mySql_user,
+                        Constants::mySql_key,
+                        Constants::mySql_dbname
+                    );
+    if( $mysqli->connect_errno ){
+        die('Could not connect: ' . $mysqli->connect_errno);
     }
-    mysql_select_db(Constants::mySql_dbname, $conn);
-    $sql = "SELECT value FROM words WHERE word = '".$word."'";
-    $sqlReturn = mysql_query($sql, $conn);
-    if( !$sqlReturn ){
-        die('Could not get data: ' . mysql_error());
+    $stmt = $conn->prepare("SELECT value FROM words WHERE word = ?");
+    $stmt->bind_param("s", $word);
+    $stmt->bind_result($sqlRetValue);
+
+    $stmt->execute();
+    $stmt->store_result();
+
+    if( $stmt->error ){
+        die('Could not get data: ' . $stmt->error);
     }
-    else if( !($row = mysql_fetch_array($sqlReturn, MYSQL_ASSOC)) ){
-        $shouldInsert = true;
+    else if( $stmt->num_rows<1 ){
+        $shouldInsert=true;
     }
 
+    $stmt->free_result();
+    $stmt->close();
+
     if($shouldInsert){
-        $sql = "INSERT INTO words (word, value, value_default, upvotes, downvotes) VALUES ('".$word."', '".$coolness."', '".$coolness."', '0', '0')";
-        $retval = mysql_query( $sql, $conn );
-        if(! $retval ){
+        $stmt = $conn->prepare( "INSERT INTO words (word, value, value_default, upvotes, downvotes) VALUES ( ?, ?, ?, '0', '0')" );
+        $stmt->bind_param("sii", $word, $coolness, $coolness);
+        $stmt->execute();
+        if( $stmt->error ){
             die('Could not enter data: ' . mysql_error());
         }
     }
 
-    mysql_close($conn);
+    $stmt->close();
+    $conn->close();
 }
 
 function getCoolnessForWord($word){
     $coolness = -1;
 
-    $conn = mysql_connect(Constants::mySql_host, Constants::mySql_user, Constants::mySql_key);
-    if( !$conn ){
-        die('Could not connect: ' . mysql_error());
+    $conn = new mysqli( Constants::mySql_host,
+                        Constants::mySql_user,
+                        Constants::mySql_key,
+                        Constants::mySql_dbname
+                    );
+    if( $mysqli->connect_errno ){
+        die('Could not connect: ' . $mysqli->connect_errno);
     }
-    mysql_select_db(Constants::mySql_dbname, $conn);
-    $sql = "SELECT value FROM words WHERE word = '".$word."'";
-    $sqlReturn = mysql_query($sql, $conn);
-    if( !$sqlReturn ){
-        die('Could not get data: ' . mysql_error());
+    $stmt = $conn->prepare("SELECT value FROM words WHERE word = ?");
+    $stmt->bind_param("s", $word);
+    $stmt->bind_result($sqlRetValue);
+
+    $stmt->execute();
+    $stmt->store_result();
+
+    if( $stmt->error ){
+        die('Could not get data: ' . $stmt->error);
     }
-    else if( $row = mysql_fetch_array($sqlReturn, MYSQL_ASSOC) ){
-        $coolness = intval($row['value']);
+    else if( $stmt->fetch() ){
+        $coolness = intval($sqlRetValue);
     }
 
-    mysql_close($conn);
+    $stmt->free_result();
+    $stmt->close();
+    $conn->close();
 
     if($coolness==-1){
         $coolness = generateCoolnessForWord($word);
