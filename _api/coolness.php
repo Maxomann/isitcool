@@ -13,11 +13,12 @@ if( $word != "" ){
         'word' => $word,
         'coolness' => $coolness
     );
-}else {
+}
+
+if(!isset($result)){
     $result = array(
         'status' => 'error'
     );
 }
-
 echo json_encode($result);
 ?>

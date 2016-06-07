@@ -48,15 +48,20 @@ robot_tags:
         <div id="vote_popup_overlay"></div>
         <div id="vote_popup_container">
             <div id="vote_popup">
-                <div class="vote_button_container" id="downvote" onclick="voteDown()">
-                    <p>Down</p>
-                    <div class="vote_button"><p>-</p></div>
+                <div id="vote_popup_inner_login">
+                    <p>Login to vote:</p>
+                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
                 </div>
-                <div class="vote_button_container" id="upvote" onclick="voteUp()">
-                    <p>Up</p>
-                    <div class="vote_button"><p>+</p></div>
+                <div id="vote_popup_inner_vote">
+                    <div class="vote_button_container" id="downvote" onclick="voteDown()">
+                        <p>Down</p>
+                        <div class="vote_button"><p>-</p></div>
+                    </div>
+                    <div class="vote_button_container" id="upvote" onclick="voteUp()">
+                        <p>Up</p>
+                        <div class="vote_button"><p>+</p></div>
+                    </div>
                 </div>
-                <p id="vote_popup_hide" onclick="hideVotePopup()">Hide</p>
             </div>
         </div>
         <div class="socialButtons">

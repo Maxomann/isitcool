@@ -118,11 +118,11 @@ function hideVotePopup(){
 	}
 }
 function voteUp(){
-	console.log("vote: up");
+	isitcool.vote.vote(true);
 	hideVotePopup();
 }
 function voteDown(){
-	console.log("vote: down");
+	isitcool.vote.vote(false);
 	hideVotePopup();
 }
 
@@ -239,6 +239,8 @@ $(document).ready(function(){
 	if(isInternetExplorer()){
 		document.getElementById('iewarning').style.display="block";
 	}
+
+    isitcool.vote.updateLoginAndVoteState();
 
 	activateDynamicExamples();
 

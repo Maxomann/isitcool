@@ -1,6 +1,25 @@
 <?php
 include 'secretConstants.php';
 
+/*Login*/
+function getLoginState(){
+    return isset($_SESSION['googleId']);
+}
+function login($idToken){
+    $googleResponse = file_get_contents("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=".(string)$idToken);
+    $grJson = json_decode( $googleResponse );
+    if($grJson['aud'] == '281756752495-m5cnqu238ehutjo8mpktrg2iuten7d1r.apps.googleusercontent.com'){
+        $_SESSION['googleId'] = $grJson['sub'];
+        return true;
+    }
+    return false;
+}
+function logout(){
+    if(getLoginState()){
+        unset($_SESSION['googleId']);
+    }
+}
+
 function cleanInput($input/*String*/){
     $input = filter_var($input, FILTER_SANITIZE_STRING);
     $input = strtolower($input);
@@ -8,8 +27,8 @@ function cleanInput($input/*String*/){
 }
 
 function getWordFromURL(){
-    if (isset($_GET['q'])) {
-        $param_q = (string)$_GET['q'];
+    if (isset($_REQUEST['q'])) {
+        $param_q = (string)$_REQUEST['q'];
         return cleanInput($param_q);
     }else{
         return "";
