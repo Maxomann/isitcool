@@ -1,13 +1,30 @@
 <?php
 header('Access-Control-Allow-Origin: http://isitcool.net');
 header('Access-Control-Allow-Origin: http://localhost:4000');
-session_start();
 
-include 'functions.php';
+include 'vote_functions.php';
 
 $action = $_REQUEST['action'];
-/*getVoteState, vote*/
+/*requestId, getVoteState, vote*/
 
+$ip = getAnonymousIp();
+
+if( $action == 'requestId' ){
+    $returnId = lookupIdForIp($ip);
+    if($returnId==false){
+        $returnId = generateId();
+        linkIpToId($returnId, $ip);
+    }
+
+    $result = array(
+        'status' => 'success',
+        'id' => (string)$returnId
+    );
+}else if( $action == 'getVoteState' ){
+
+}else if( $action == 'vote' ){
+
+}
 
 if(!isset($result)){
     $result = array(
