@@ -2,7 +2,7 @@
 header('Access-Control-Allow-Origin: http://isitcool.net');
 header('Access-Control-Allow-Origin: http://localhost:4000');
 
-include 'functions.php';
+include_once 'functions.php';
 $word = getWordFromURL();
 
 if( $word != "" ){

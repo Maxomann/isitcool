@@ -1,5 +1,5 @@
 <?php
-include 'secretConstants.php';
+include_once 'secretConstants.php';
 
 function cleanInput($input/*String*/){
     $input = filter_var($input, FILTER_SANITIZE_STRING);
