@@ -36,18 +36,19 @@ if( $action == 'requestId' ){
         }
     }
 }else if( $action == 'vote' ){
-    spamcheck($ip);
-    if(isset($id) && isset($word)){
-        $voteResult = vote($id, $word);
-        if($voteResult!=false){
-            $coolness = getCoolnessForWord($word);
-            $result = array(
-                'status' => 'success',
-                'id' => $id,
-                'word' => $word,
-                'voteState' => $voteResult,
-                'coolness' => $coolness
-            );
+    if( spamcheck($ip) ){
+        if(isset($id) && isset($word)){
+            $voteResult = vote($id, $word);
+            if($voteResult!=false){
+                $coolness = getCoolnessForWord($word);
+                $result = array(
+                    'status' => 'success',
+                    'id' => $id,
+                    'word' => $word,
+                    'voteState' => $voteResult,
+                    'coolness' => $coolness
+                );
+            }
         }
     }
 }
