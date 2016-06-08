@@ -61,6 +61,7 @@ function doesWordExistInWordlist($word){
     }
     $stmt->free_result();
     $stmt->close();
+    $conn->close();
 
     return $retVal;
 }

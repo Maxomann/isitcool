@@ -240,7 +240,7 @@ $(document).ready(function(){
 		document.getElementById('iewarning').style.display="block";
 	}
 
-    isitcool.vote.updateLoginAndVoteState();
+    isitcool.vote.init();
 
 	activateDynamicExamples();
 

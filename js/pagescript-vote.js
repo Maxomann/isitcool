@@ -3,7 +3,7 @@ var isitcool = {
         login_state: false, /*false - not logged in, true - logged in*/
         vote_state: 0,/*0 - undefined, 1 - none, 2 - down, 3 - up*/
 
-        updateLoginAndVoteState: function(){
+        init: function(){
             $.ajax({
                 url: 'http://isitcool.bplaced.net/login.php',
     			type: 'GET',
