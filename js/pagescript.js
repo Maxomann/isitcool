@@ -359,7 +359,7 @@ function analyzeWord(word){
 				}
 				catch(e){}
 				try{
-				/*drawHistoryChart(word, coolness);*/
+				drawHistoryChart(word, coolness);
 				}
 				catch(e){}
 				try{
@@ -544,6 +544,70 @@ function getDefinition(word){
         },
         error: function(err) { console.log("AJAX Wikipedia word"); },
     });
+}
+
+function fnv32a(str){
+	var FNV1_32A_INIT = 0x811c9dc5;
+	var hval = FNV1_32A_INIT;
+	for ( var i = 0; i < str.length; ++i )
+	{
+		hval ^= str.charCodeAt(i);
+		hval += (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24);
+	}
+	return hval >>> 0;
+}
+
+
+function getPastCoolnessForWord(word){
+    var valueHash =fnv32a(word);
+    if(valueHash<0)
+        valueHash*=-1;
+
+    var asString = valueHash.toString();
+    return parseInt(asString.substring(asString.length-2,asString.length));
+}
+
+var _historyChart;
+function drawHistoryChart(word, coolness){
+
+    var historyValues = new Array();
+    historyValues[0]=word;
+    for(var i=1; i<6; ++i){
+        historyValues[i]=fnv32a(historyValues[i-1].toString());
+    }
+    historyValues[0]=coolness;
+    for(var i=1; i<6; ++i){
+        historyValues[i]=getPastCoolnessForWord(historyValues[i].toString());
+    }
+    historyValues.reverse();
+
+    var data ={
+        labels: ["2000","2003","2006", "2009", "2012", "today"],
+        datasets:[
+            {
+                label: "Coolness",
+				fill:true,
+                backgroundColor: "rgba(249,105,14,0.2)",
+                borderColor: "#F9690E",
+                pointBorderColor: "#F9690E",
+                pointHoverBackgroundColor: "#F9690E",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                data: historyValues
+            }
+        ]
+    };
+
+	var options ={
+        tooltips:{enabled:false},
+		scales:{fontColor:"#2980b9"}
+		/*scaleFontColor: "#2980b9"*/
+    };
+
+
+    var context = document.getElementById('srHistoryChart').getContext('2d');
+    if(_historyChart !== undefined)
+        _historyChart.destroy();
+    _historyChart = new Chart(context, {type:'line', data:data, options:options});
 }
 
 function getRedditSearch(word){
