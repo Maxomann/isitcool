@@ -10,6 +10,9 @@ $action = $_REQUEST['action'];/*requestId, getVoteState, vote*/
 if(isset($_REQUEST['id'])){
     $id = $_REQUEST['id'];
 }
+if(isset($_REQUEST['state'])){
+    $voteState = $_REQUEST['state'];
+}
 if(getWordFromURL()!=""){
     $word = getWordFromURL();
 }
@@ -37,8 +40,8 @@ if( $action == 'requestId' ){
     }
 }else if( $action == 'vote' ){
     if( spamcheck($ip) ){
-        if(isset($id) && isset($word)){
-            $voteResult = vote($id, $word);
+        if(isset($id) && isset($word) && isset($voteState)){
+            $voteResult = vote($id, $word, $voteState);
             if($voteResult!=false){
                 $coolness = getCoolnessForWord($word);
                 $result = array(

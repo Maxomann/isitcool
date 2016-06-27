@@ -5,7 +5,7 @@ var isitcool = {
 
         getIdCookie: function(callback){
             return false;
-        }
+        },
 
         init: function(){
             /*$.ajax({
