@@ -2,6 +2,7 @@
 include_once 'secretConstants.php';
 
 function cleanInput($input/*String*/){
+    $input = mb_strimwidth($input, 0, 100);
     $input = filter_var($input, FILTER_SANITIZE_STRING);
     $input = strtolower($input);
     return trim($input);
