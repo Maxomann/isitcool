@@ -169,6 +169,10 @@ function cleanInput(input){
 }
 
 function setResultBoxVisibleState(state){
+    if(state==1){//workaround for #64
+        state=2;
+    }
+
 	//state: 0 - invisible, 1 - loading, 2- result
 	var resultBox = document.getElementById('searchResult');
 	var resultBox_container = document.getElementById('searchResult_container');
