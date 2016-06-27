@@ -1,10 +1,14 @@
 var isitcool = {
     vote: {
         login_state: false, /*false - not logged in, true - logged in*/
-        vote_state: 0,/*0 - undefined, 1 - none, 2 - down, 3 - up*/
+        vote_state: 0,/*0 - undefined, 1 - neutral, 2 - down, 3 - up*/
+
+        getIdCookie: function(callback){
+            return false;
+        }
 
         init: function(){
-            $.ajax({
+            /*$.ajax({
                 url: 'http://isitcool.bplaced.net/login.php',
     			type: 'GET',
     			data: {
@@ -35,7 +39,7 @@ var isitcool = {
                 error: function(){
                     console.log("Error: RequestLoginState");
                 }
-            });
+            });*/
         },
 
         vote: function(bool/*false - down, true - up*/) {
@@ -47,10 +51,6 @@ var isitcool = {
         },
 
         setVoteState: function(){
-
-        },
-
-        setLoginState: function(bool){
 
         }
     }

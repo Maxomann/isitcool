@@ -568,7 +568,15 @@ function getPastCoolnessForWord(word){
         valueHash*=-1;
 
     var asString = valueHash.toString();
-    return parseInt(asString.substring(asString.length-2,asString.length));
+    var asInt = parseInt(asString.substring(asString.length-2,asString.length));
+    while(asInt<30){
+        asInt++;
+    }
+    while(asInt>70){
+        asInt--;
+    }
+
+    return asInt;
 }
 
 var _historyChart;
@@ -603,8 +611,16 @@ function drawHistoryChart(word, coolness){
 
 	var options ={
         tooltips:{enabled:false},
-		scales:{fontColor:"#2980b9"}
-		/*scaleFontColor: "#2980b9"*/
+		scales:{
+            fontColor:"#2980b9",
+            yAxes: [{
+                display: true,
+                ticks: {
+                    suggestedMin: 0,   // minimum will be 0, unless there is a lower value.
+                    suggestedMax: 100
+                }
+            }]
+        }
     };
 
 
