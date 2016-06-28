@@ -181,8 +181,12 @@
         $votesNormal = $upvotes - $downvotes;
 
         $normalizedResult = bcdiv($votesNormal, $votesTotal, 6);
-        $normalizedResult+=1;
-        $coolnessResult = round($normalizedResult*50);
+        if($totalVotes>100){
+            $coolnessResult = round($normalizedResult*50);
+        }else{
+            $coolnessResult = round($normalizedResult*16);
+        }
+        $coolnessResult+=50;
 
         $stmt = $conn->prepare("UPDATE words SET value = ? WHERE word = ?");
         $stmt->bind_param("is", $coolnessResult, $word);
