@@ -1,16 +1,5 @@
 var api_key_flickr = "2f25bef1b043e8cb0b0380a80c4a551a";
 
-function fnv32a(str){
-	var FNV1_32A_INIT = 0x811c9dc5;
-	var hval = FNV1_32A_INIT;
-	for ( var i = 0; i < str.length; ++i )
-	{
-		hval ^= str.charCodeAt(i);
-		hval += (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24);
-	}
-	return hval >>> 0;
-}
-
 function randomIntFromInterval(min,max)
 {
     return Math.floor(Math.random()*(max-min+1)+min);
@@ -63,20 +52,10 @@ function setAndAnalyzeWord(word){
 	document.getElementById('textbox').value = word;
 	word = cleanInput(word);
 	analyzeWord(word);
-	scrollToResult();
 }
 function setAndAnalyzeRandomWord(){
 	var word = getRandomWordFromIndex();
 	setAndAnalyzeWord(word);
-}
-
-function getCoolnessForWord(word){
-    var valueHash =fnv32a(word);
-    if(valueHash<0)
-        valueHash*=-1;
-
-    var asString = valueHash.toString();
-    return parseInt(asString.substring(asString.length-2,asString.length));
 }
 
 function isMobileDevice(){
@@ -139,11 +118,11 @@ function hideVotePopup(){
 	}
 }
 function voteUp(){
-	console.log("vote: up");
+	isitcool.vote.vote(true);
 	hideVotePopup();
 }
 function voteDown(){
-	console.log("vote: down");
+	isitcool.vote.vote(false);
 	hideVotePopup();
 }
 
@@ -186,18 +165,40 @@ function cleanInput(input){
 	retVal = retVal.replace (/#/g, '')
 	retVal = retVal.replace(/\s\s+/g, ' ');
 	retVal = retVal.trim();
-	return retVal.toUpperCase();
+	return retVal.toLowerCase();
 }
 
-function setResultBoxVisible(bool){
-	var resultBox = document.getElementById('searchResult');
+function setResultBoxVisibleState(state){
+    if(state==1){//workaround for #64
+        state=2;
+    }
 
-	if(bool){
-		resultBox.style.visibility = 'visible';
-        resultBox.style.opacity = 1;
-	}else{
-		resultBox.style.visibility = 'hidden';
+	//state: 0 - invisible, 1 - loading, 2- result
+	var resultBox = document.getElementById('searchResult');
+	var resultBox_container = document.getElementById('searchResult_container');
+	var resultBox_loading = document.getElementById('loadingBanner');
+
+	if(state == 0){
+		resultBox_container.style.display = 'none';
+		resultBox.style.display = 'none';
+		resultBox_loading.style.display = 'none';
+		resultBox_container.style.opacity = 0;
         resultBox.style.opacity = 0;
+		resultBox_loading.style.opacity = 0;
+	}else if( state == 1 ){
+		resultBox_container.style.display = 'block';
+		resultBox.style.display = 'none';
+		resultBox_loading.style.display = 'block';
+		resultBox_container.style.opacity = 1;
+        resultBox.style.opacity = 0;
+		resultBox_loading.style.opacity = 1;
+	}else if( state == 2 ){
+		resultBox_container.style.display = 'block';
+		resultBox.style.display = 'block';
+		resultBox_loading.style.display = 'none';
+		resultBox_container.style.opacity = 1;
+        resultBox.style.opacity = 1;
+		resultBox_loading.style.opacity = 0;
 	}
 }
 
@@ -216,22 +217,22 @@ function clearInputBoxTimeout(){
 }
 function onInputBoxChanged(){
 	clearInputBoxTimeout();
+
+	var input = document.getElementById('textbox').value
+	var word = cleanInput(input);
+	if(word==''){
+		$("#textbox").blur();
+	}
+
 	timeout = setTimeout(function(){
 		var input = document.getElementById('textbox').value
 		var word = cleanInput(input);
 		analyzeWord(word);
-
-		if(word==''){
-			$("#textbox").blur();
-		}
 	}, 1000);
 }
 
 function scrollToResult(){
-	var result = document.getElementById("searchResult");
-	if(result.style.visibility=="visible" && result.style.display!="none"){
-		$('html,body').animate({scrollTop: $('#textbox').offset().top});
-	}
+	$('html,body').animate({scrollTop: $('#textbox').offset().top});
 }
 
 $(document).ready(function(){
@@ -242,6 +243,8 @@ $(document).ready(function(){
 	if(isInternetExplorer()){
 		document.getElementById('iewarning').style.display="block";
 	}
+
+    isitcool.vote.init();
 
 	activateDynamicExamples();
 
@@ -255,7 +258,6 @@ $(document).ready(function(){
 			clearInputBoxTimeout();
 			hideVirtualKeyboard();
             analyzeWord(word);
-			scrollToResult();
 		}
     });
 	$('#textbox').on('input', function(e) {
@@ -280,6 +282,19 @@ $(document).ready(function(){
 	$('#vote_popup_overlay').click(function(e){
 		hideVotePopup();
 	});
+
+	$(document).keydown(function(e){
+	    if(e.keyCode == 8) {
+			$("#textbox").val('');
+			if(!($('#textbox').is(":focus"))){
+				e.preventDefault();
+	        	$("#textbox").focus();
+			}
+	    }
+	});
+	$(document).keypress(function(e) {
+		$("#textbox").focus();
+	});
 });
 
 function processUrlParameter(){
@@ -288,7 +303,6 @@ function processUrlParameter(){
         word = word.substr(3);
 		word = cleanInput(word);
 		setAndAnalyzeWord(word);
-		scrollToResult();
     }
 }
 
@@ -298,57 +312,73 @@ function analyzeWord(word){
     if(!word){
         history.pushState( {}, '', '?' );
 		ga('send', 'pageview', '/');
-		setResultBoxVisible(false);
+		setResultBoxVisibleState(0);
     }
     else
     {
         history.pushState( {}, '', '?q='+encodeURIComponent(word.toLowerCase()) );
 		ga('send', 'pageview', '/?q='+word.toLowerCase());
-        var coolness = getCoolnessForWord(word);
+		setResultBoxVisibleState(1);
 
-		for(el in wordIndex){
-			var element = wordIndex[el];
-            if(element.word==word){
-				coolness = element.value;
-				break;
+		$.ajax({
+			url: 'http://isitcool.bplaced.net/coolness.php',
+			type: 'GET',
+			data: {
+				q: word.toLowerCase()
+			},
+			dataType: 'json',
+			success: function(data){
+				var coolness = data['coolness'];
+
+				for(el in wordIndex){
+					var element = wordIndex[el];
+		            if(element.word==word){
+						coolness = element.value;
+						break;
+					}
+				}
+
+		        var comment;
+		        if(coolness<20)
+		            comment=levels["0%"];
+		        else if(coolness<40)
+		            comment=levels["20%"];
+		        else if(coolness<60)
+		            comment=levels["40%"];
+		        else if(coolness<80)
+		            comment=levels["60%"];
+		        else
+		            comment=levels["80%"];
+
+		        document.getElementById('srHeadingWord').innerHTML = word;
+		        document.getElementById('srHeadingPercentage').innerHTML = coolness.toString();
+		        document.getElementById('srHeadingComment').innerHTML = comment;
+
+				try{
+		        drawPieChart(coolness);
+				}
+				catch(e){}
+				try{
+		        getDefinition(word);
+				}
+				catch(e){}
+				try{
+				drawHistoryChart(word, coolness);
+				}
+				catch(e){}
+				try{
+				getRedditSearch(word);
+				}
+				catch(e){}
+
+				setResultBoxVisibleState(2);
+			},
+			error:function(data){
+				document.getElementById('srHeadingPercentage').innerHTML = "Error: Cannot connect to server";
 			}
-		}
-
-        var comment;
-        if(coolness<20)
-            comment=levels["0%"];
-        else if(coolness<40)
-            comment=levels["20%"];
-        else if(coolness<60)
-            comment=levels["40%"];
-        else if(coolness<80)
-            comment=levels["60%"];
-        else
-            comment=levels["80%"];
-
-        document.getElementById('srHeadingWord').innerHTML = word;
-        document.getElementById('srHeadingPercentage').innerHTML = coolness.toString();
-        document.getElementById('srHeadingComment').innerHTML = comment;
-
-		try{
-        drawPieChart(coolness);
-		}
-		catch(e){}
-		try{
-        getDefinition(word);
-		}
-		catch(e){}
-		try{
-		drawHistoryChart(word, coolness);
-		}
-		catch(e){}
-		try{
-		getRedditSearch(word);
-		}
-		catch(e){}
-
-		setResultBoxVisible(true);
+		});
     }
+	scrollToResult();
 };
 
 var _pieChart;
@@ -520,6 +550,34 @@ function getDefinition(word){
     });
 }
 
+function fnv32a(str){
+	var FNV1_32A_INIT = 0x811c9dc5;
+	var hval = FNV1_32A_INIT;
+	for ( var i = 0; i < str.length; ++i )
+	{
+		hval ^= str.charCodeAt(i);
+		hval += (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24);
+	}
+	return hval >>> 0;
+}
+
+
+function getPastCoolnessForWord(word){
+    var valueHash =fnv32a(word);
+    if(valueHash<0)
+        valueHash*=-1;
+
+    var asString = valueHash.toString();
+    var asInt = parseInt(asString.substring(asString.length-2,asString.length));
+    while(asInt<30){
+        asInt++;
+    }
+    while(asInt>70){
+        asInt--;
+    }
+
+    return asInt;
+}
 
 var _historyChart;
 function drawHistoryChart(word, coolness){
@@ -531,7 +589,7 @@ function drawHistoryChart(word, coolness){
     }
     historyValues[0]=coolness;
     for(var i=1; i<6; ++i){
-        historyValues[i]=getCoolnessForWord(historyValues[i].toString());
+        historyValues[i]=getPastCoolnessForWord(historyValues[i].toString());
     }
     historyValues.reverse();
 
@@ -553,8 +611,16 @@ function drawHistoryChart(word, coolness){
 
 	var options ={
         tooltips:{enabled:false},
-		scales:{fontColor:"#2980b9"}
-		/*scaleFontColor: "#2980b9"*/
+		scales:{
+            fontColor:"#2980b9",
+            yAxes: [{
+                display: true,
+                ticks: {
+                    suggestedMin: 0,   // minimum will be 0, unless there is a lower value.
+                    suggestedMax: 100
+                }
+            }]
+        }
     };
 
 

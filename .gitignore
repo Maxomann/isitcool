@@ -2,6 +2,7 @@ _site/
 .sass-cache/
 .jekyll-metadata
 .local/
+_api/secretConstants.php
 
 # =========================
 # Operating System Files
