@@ -282,6 +282,7 @@ hr{
     color: #34495E;
     background-color: #34495E;
     border-color: #34495E;
+    margin: 0;
 }
 
 .relative{
@@ -450,4 +451,66 @@ hr{
 }
 #cookie_info_button:hover{
     cursor: pointer;
+}
+
+/*Container: More*/
+#container_more{
+    max-width: 800px;
+    margin: auto;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: space-between;
+
+    margin-bottom: 50px;
+    margin-top: 40px;
+}
+#container_more div:not(.flexfull){
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+
+    width: 300px;
+    height: 300px;
+    padding: 50px;
+    /*background-color: red;*/
+
+    margin: 0;
+}
+#container_more div h3{
+    font-weight: 500;
+    text-decoration: underline;
+}
+#container_more div p{
+    font-weight: 300;
+}
+@media (max-width:400px) {
+    #container_more div:not(#more_flextop){
+        padding: 0px;
+    }
+}
+.flexfull{
+    width: 800px;
+
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: auto;
+    align-self: center;
+
+    /*background-color: green;*/
+
+    margin: 0;
+}
+#container_more div h3{
+    font-size: 24px;
+}
+.flexfull h2{
+    font-size: 60px;
+}
+#tryitnow{
+    color: #F9690E;
+    font-size: 60px;
 }
