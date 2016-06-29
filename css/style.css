@@ -526,7 +526,7 @@ hr{
 }
 @media (max-width:550px) {
     #container_more div:not(#more_flextop){
-        padding: 10px 0 10px 0;
+        padding: 0px 0 0px 0;
     }
 }
 .flexfull{
