@@ -142,6 +142,7 @@
         $stmt->execute();
         $stmt->close();
 
+        $conn->close();
         recalculateCoolnessForWord($word);
         return $voteState;
     }
@@ -192,5 +193,6 @@
         $stmt->bind_param("is", $coolnessResult, $word);
         $stmt->execute();
         $stmt->close();
+        $conn->close();
     }
 ?>
