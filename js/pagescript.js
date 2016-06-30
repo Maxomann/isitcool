@@ -86,46 +86,6 @@ function disableImageOverlay(){
 	}, 100);
 }
 
-function switchVotePopup(){
-	var vote_popup = document.getElementById("vote_popup");
-	var vote_overlay = document.getElementById("vote_popup_overlay");
-	if( vote_popup.style.visibility == "visible"){
-		vote_overlay.style.opacity = 0;
-		vote_popup.style.opacity = 0;
-		setTimeout(function(){
-			var vote_popup = document.getElementById("vote_popup");
-			vote_overlay.style.visibility = "hidden";
-			vote_popup.style.visibility = "hidden";
-		}, 100);
-	}else{
-		vote_overlay.style.visibility = "visible";
-		vote_popup.style.visibility = "visible";
-		vote_overlay.style.opacity = 1;
-		vote_popup.style.opacity = 1;
-	}
-}
-function hideVotePopup(){
-	var vote_popup = document.getElementById("vote_popup");
-	var vote_overlay = document.getElementById("vote_popup_overlay");
-	if( vote_popup.style.visibility == "visible"){
-		vote_popup.style.opacity = 0;
-		vote_overlay.style.opacity = 0;
-		setTimeout(function(e){
-			var vote_popup = document.getElementById("vote_popup");
-			vote_overlay.style.visibility = "hidden";
-			vote_popup.style.visibility = "hidden";
-		}, 100);
-	}
-}
-function voteUp(){
-	isitcool.vote.vote(true);
-	hideVotePopup();
-}
-function voteDown(){
-	isitcool.vote.vote(false);
-	hideVotePopup();
-}
-
 function getInternetExplorerVersion()
 {
     var rV = -1; // Return value assumes failure.
@@ -377,6 +337,8 @@ function analyzeWord(word){
 				document.getElementById('srHeadingPercentage').innerHTML = "Error: Cannot connect to server";
 			}
 		});
+
+        isitcool.vote.updateVoteState(word.toLowerCase());
     }
 	scrollToResult();
 };
