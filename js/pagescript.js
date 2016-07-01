@@ -391,7 +391,9 @@ function loadExampleImageFromFlickr(word, i/*Index of the example image*/){
 			license: "4,5,6,7"
 		}, // Additional parameters here
         complete: function(response) {
-			var substr = response.responseText.substring(14, response.responseText.length-1);
+			var substr = response.responseText.substring(
+                response.responseText.indexOf("(")+1,
+                response.responseText.length-1);
 			var data = JSON.parse(substr);
 			$.ajax({
 		        url: "https://api.flickr.com/services/rest/",
@@ -403,7 +405,9 @@ function loadExampleImageFromFlickr(word, i/*Index of the example image*/){
 					photo_id: data["photos"]["photo"][i]["id"]
 				}, // Additional parameters here
 		        complete: function(response) {
-					var substr = response.responseText.substring(14, response.responseText.length-1);
+					var substr = response.responseText.substring(
+                            response.responseText.indexOf("(")+1,
+                            response.responseText.length-1);
 					var data = JSON.parse(substr);
 
 					if( data["sizes"]["size"][5] !== undefined ){

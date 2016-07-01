@@ -131,11 +131,21 @@ a.nohovereffect{
     height: 50px;
     width: 50px;
     background-color: #cf5305;
+
+    -webkit-transition: background-image 0.2s ease-in-out;
+    transition: background-image 0.2s ease-in-out;
+    -webkit-transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 }
 #vote_left:hover{
     background-image: url("../assets/vote/down_selected.svg");
-    cursor: pointer;
     background-color: #233140;
+    cursor: pointer;
+
+    -webkit-transition: background-image 0.2s ease-in-out;
+    transition: background-image 0.2s ease-in-out;
+    -webkit-transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 }
 #vote_center{
     position: absolute;
@@ -162,11 +172,21 @@ a.nohovereffect{
     height: 50px;
     width: 50px;
     background-color: #cf5305;
+
+    -webkit-transition: background-image 0.2s ease-in-out;
+    transition: background-image 0.2s ease-in-out;
+    -webkit-transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 }
 #vote_right:hover{
     background-image: url("../assets/vote/up_selected.svg");
-    cursor: pointer;
     background-color: #233140;
+    cursor: pointer;
+
+    -webkit-transition: background-image 0.2s ease-in-out;
+    transition: background-image 0.2s ease-in-out;
+    -webkit-transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 }
 /*END - Vote*/
 

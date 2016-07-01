@@ -36,6 +36,11 @@ var isitcool = {
             downarrow = document.getElementById('vote_left');
             uparrow = document.getElementById('vote_right');
             voteText = document.getElementById('vote_center_text');
+
+            downarrow.addEventListener('mouseover', function(){isitcool.vote.setTempVoteDisplayState(1)});
+            downarrow.addEventListener('mouseout', function(){isitcool.vote.setTempVoteDisplayState(0)});
+            uparrow.addEventListener('mouseover', function(){isitcool.vote.setTempVoteDisplayState(2)});
+            uparrow.addEventListener('mouseout', function(){isitcool.vote.setTempVoteDisplayState(0)});
         },
 
         vote: function(bool/*false - down, true - up*/) {
@@ -68,7 +73,7 @@ var isitcool = {
             		dataType: 'json',
                     success: function(data) {
                         if(data['status']=='success'){
-                            this.playVoteSuccessAnimation();
+                            isitcool.vote.playVoteSuccessAnimation();
                             setAndAnalyzeWord(word);
                         }else{
                             console.log(data);
@@ -98,13 +103,19 @@ var isitcool = {
                         if(data['status']=='success'){
                             var state = data['voteState'];
                             if(state == "up"){
-                                setVoteState(2);
+                                isitcool.vote.setVoteState(2);
+                                isitcool.vote.setTempVoteDisplayState(2);
                             }else if(state=="down"){
-                                setVoteState(1);
+                                isitcool.vote.setVoteState(1);
+                                isitcool.vote.setTempVoteDisplayState(1);
+                            }else if(state=="none"){
+                                isitcool.vote.setVoteState(0);
+                                isitcool.vote.setTempVoteDisplayState(0);
                             }else{
                                 console.log("Wrong voteState");
                                 console.log(state);
-                                setVoteState(0);
+                                isitcool.vote.setVoteState(0);
+                                isitcool.vote.setTempVoteDisplayState(0);
                             }
                         }else{
                             console.log("AJAX getVoteState ERROR");
@@ -116,7 +127,9 @@ var isitcool = {
             });
         },
 
+        _voteState: 0,
         setVoteState: function(state/*0 - neutral, 1 - down, 2 - up*/){
+            this._voteState = state;
             switch(state){
                 case 0:
                 downarrow.style.backgroundImage = 'url("../assets/vote/down.svg")';
@@ -131,7 +144,7 @@ var isitcool = {
                 uparrow.style.backgroundColor = '#cf5305';
                 break;
                 case 2:
-                downarrow.style.backgroundImage = 'url("../assets/vote/down_selected.svg")';
+                downarrow.style.backgroundImage = 'url("../assets/vote/down.svg")';
                 uparrow.style.backgroundImage = 'url("../assets/vote/up_selected.svg")';
                 downarrow.style.backgroundColor = '#cf5305';
                 uparrow.style.backgroundColor = '#233140';
@@ -139,6 +152,17 @@ var isitcool = {
                 default:
                     console.log("WrongState");
                 break;
+            }
+        },
+
+        _voteStateSave: 0,
+        setTempVoteDisplayState: function(state/*0 - neutral, 1 - down, 2 - up*/){
+            if(state==0){
+                this.setVoteState(this._voteStateSave);
+                this._voteStateSave=0;
+            }else{
+                this._voteStateSave = this._voteState;
+                this.setVoteState(state);
             }
         },
 
