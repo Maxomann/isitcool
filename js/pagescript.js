@@ -86,46 +86,6 @@ function disableImageOverlay(){
 	}, 100);
 }
 
-function switchVotePopup(){
-	var vote_popup = document.getElementById("vote_popup");
-	var vote_overlay = document.getElementById("vote_popup_overlay");
-	if( vote_popup.style.visibility == "visible"){
-		vote_overlay.style.opacity = 0;
-		vote_popup.style.opacity = 0;
-		setTimeout(function(){
-			var vote_popup = document.getElementById("vote_popup");
-			vote_overlay.style.visibility = "hidden";
-			vote_popup.style.visibility = "hidden";
-		}, 100);
-	}else{
-		vote_overlay.style.visibility = "visible";
-		vote_popup.style.visibility = "visible";
-		vote_overlay.style.opacity = 1;
-		vote_popup.style.opacity = 1;
-	}
-}
-function hideVotePopup(){
-	var vote_popup = document.getElementById("vote_popup");
-	var vote_overlay = document.getElementById("vote_popup_overlay");
-	if( vote_popup.style.visibility == "visible"){
-		vote_popup.style.opacity = 0;
-		vote_overlay.style.opacity = 0;
-		setTimeout(function(e){
-			var vote_popup = document.getElementById("vote_popup");
-			vote_overlay.style.visibility = "hidden";
-			vote_popup.style.visibility = "hidden";
-		}, 100);
-	}
-}
-function voteUp(){
-	isitcool.vote.vote(true);
-	hideVotePopup();
-}
-function voteDown(){
-	isitcool.vote.vote(false);
-	hideVotePopup();
-}
-
 function getInternetExplorerVersion()
 {
     var rV = -1; // Return value assumes failure.
@@ -377,6 +337,8 @@ function analyzeWord(word){
 				document.getElementById('srHeadingPercentage').innerHTML = "Error: Cannot connect to server";
 			}
 		});
+
+        isitcool.vote.updateVoteState(word.toLowerCase());
     }
 	scrollToResult();
 };
@@ -429,7 +391,9 @@ function loadExampleImageFromFlickr(word, i/*Index of the example image*/){
 			license: "4,5,6,7"
 		}, // Additional parameters here
         complete: function(response) {
-			var substr = response.responseText.substring(14, response.responseText.length-1);
+			var substr = response.responseText.substring(
+                response.responseText.indexOf("(")+1,
+                response.responseText.length-1);
 			var data = JSON.parse(substr);
 			$.ajax({
 		        url: "https://api.flickr.com/services/rest/",
@@ -441,7 +405,9 @@ function loadExampleImageFromFlickr(word, i/*Index of the example image*/){
 					photo_id: data["photos"]["photo"][i]["id"]
 				}, // Additional parameters here
 		        complete: function(response) {
-					var substr = response.responseText.substring(14, response.responseText.length-1);
+					var substr = response.responseText.substring(
+                            response.responseText.indexOf("(")+1,
+                            response.responseText.length-1);
 					var data = JSON.parse(substr);
 
 					if( data["sizes"]["size"][5] !== undefined ){
