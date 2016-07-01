@@ -2,7 +2,7 @@
 layout: default
 title: isitcool.net | The 100% serious coolness ranking machine for the 21st century
 content_description: Find out how cool something or someone is. Isitcool.net is a revolutionary search engine for coolness. Try the algorithm now and share results with your friends!
-robot_tags:
+robot_tags: notranslate
 ---
 
 <div id="imageOverlay">
@@ -33,7 +33,6 @@ robot_tags:
 
 
 <div id="searchResult_container">
-    <hr/>
     <div id="loadingBanner">
         <p class="highlight">Loading ...</p>
     </div>
@@ -45,19 +44,12 @@ robot_tags:
                 (&nbsp;<span id="srHeadingComment"></span>&nbsp;)
             </p>
         </div>
-        <div id="vote_switch" onclick="switchVotePopup()"><p>-&nbsp;&nbsp;&nbsp;&nbsp;Vote&nbsp;&nbsp;&nbsp;&nbsp;+</p></div>
-        <div id="vote_popup_overlay"></div>
-        <div id="vote_popup_container">
-            <div id="vote_popup">
-                <div class="vote_button_container" id="downvote" onclick="voteDown()">
-                    <p>Down</p>
-                    <div class="vote_button"><p>-</p></div>
-                </div>
-                <div class="vote_button_container" id="upvote" onclick="voteUp()">
-                    <p>Up</p>
-                    <div class="vote_button"><p>+</p></div>
-                </div>
+        <div id="vote_container">
+            <div id="vote_left" onclick="isitcool.vote.vote(false)"></div>
+            <div id="vote_center">
+                <p id="vote_center_text">Vote here</p>
             </div>
+            <div id="vote_right" onclick="isitcool.vote.vote(true)"></div>
         </div>
         <div class="socialButtons">
             <span class='st_facebook_large' displayText='Facebook'></span>
@@ -109,8 +101,8 @@ robot_tags:
     </div>
 </div>
 
-<div id="moreinfoheadingcontainer">
-    <h2 id="moreinfoheading">More Info</h2>
+<div class="subheading">
+    <h2>More Info</h2>
 </div>
 <div id="container_more">
     <div>
