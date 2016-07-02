@@ -496,7 +496,8 @@ hr{
     }
 }
 .flexfull{
-    width: 900px;
+    width: 100%;
+    max-width: 900px;
 
     flex-grow: 0;
     flex-shrink: 0;
