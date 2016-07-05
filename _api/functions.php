@@ -1,5 +1,6 @@
 <?php
 include_once 'secretConstants.php';
+include_once 'vote_functions.php';
 
 function cleanInput($input/*String*/){
     $input = mb_strimwidth($input, 0, 100);
@@ -75,8 +76,11 @@ function tryInsertWordIntoDb_default($word, $coolness){
                             Constants::mySql_dbname
                         );
 
-        $stmt = $conn->prepare( "INSERT INTO words (word, value, value_default, upvotes, downvotes) VALUES ( ?, ?, ?, '0', '0')" );
-        $stmt->bind_param("sii", $word, $coolness, $coolness);
+        $randUp = rand(5, 15);
+        $randDown = rand(5, 15);
+
+        $stmt = $conn->prepare( "INSERT INTO words (word, value, value_default, upvotes, downvotes) VALUES ( ?, ?, ?, ?, ?)" );
+        $stmt->bind_param("siiii", $word, $coolness, $coolness, $randUp, $randDown);
         $stmt->execute();
         if( $stmt->error ){
             die('Could not enter data: ' . mysql_error());
@@ -84,7 +88,8 @@ function tryInsertWordIntoDb_default($word, $coolness){
 
         $stmt->close();
         $conn->close();
-        return true;
+
+        return recalculateCoolnessForWord($word);
     }
     return false;
 }
@@ -119,8 +124,8 @@ function getCoolnessForWord($word){
     $conn->close();
 
     if($coolness==-1){
-        $coolness = generateCoolnessForWord($word);
-        tryInsertWordIntoDb_default($word, $coolness);
+        /*$coolness = generateCoolnessForWord($word);*/
+        $coolness = tryInsertWordIntoDb_default($word, $coolness);
     }
 
     return $coolness;
