@@ -124,7 +124,7 @@ function getCoolnessForWord($word){
     $conn->close();
 
     if($coolness==-1){
-        /*$coolness = generateCoolnessForWord($word);*/
+        $coolness = generateCoolnessForWord($word);//important for call of tryInsertWordIntoDb_default
         $coolness = tryInsertWordIntoDb_default($word, $coolness);
     }
 
