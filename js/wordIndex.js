@@ -1,8 +1,8 @@
 var wordIndex=[
-    {word: "ISITCOOL.NET", value:100},
-    {word: "ISITCOOL", value:100},
-    {word: "COOL", value:100},
-    {word: "COOLNESS", value:100},
+    {word: "isitcool.net", value:100},
+    {word: "isitcool", value:100},
+    {word: "cool", value:100},
+    {word: "coolness", value:100},
     {word: "3.1", value:3.14},
     {word: "3.14", value:3.14},
     {word: "3.141", value:3.14},
