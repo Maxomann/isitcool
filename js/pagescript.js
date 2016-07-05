@@ -288,6 +288,7 @@ function analyzeWord(word){
 			},
 			dataType: 'json',
 			success: function(data){
+                var word = data['word'];
 				var coolness = data['coolness'];
 
 				for(el in wordIndex){
