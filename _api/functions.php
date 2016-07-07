@@ -76,8 +76,8 @@ function tryInsertWordIntoDb_default($word, $coolness){
                             Constants::mySql_dbname
                         );
 
-        $randUp = rand(5, 15);
-        $randDown = rand(5, 15);
+        $randUp = rand(3, 15);
+        $randDown = rand(3, 15);
 
         $stmt = $conn->prepare( "INSERT INTO words (word, value, value_default, upvotes, downvotes) VALUES ( ?, ?, ?, ?, ?)" );
         $stmt->bind_param("siiii", $word, $coolness, $coolness, $randUp, $randDown);
