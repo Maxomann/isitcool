@@ -88,6 +88,7 @@
                 die("Something is terribly wrong here");
             }
 
+            //get previous count
             $previousCount = 0;
 
             $stmt = $conn->prepare("SELECT ".$countToSubtractFrom." FROM words WHERE word = ?");
@@ -137,8 +138,10 @@
         $stmt->execute();
         $stmt->close();
 
-        $stmt = $conn->prepare( "INSERT INTO votes (word, id, opinion) VALUES ( ?, ?, ? )" );
-        $stmt->bind_param("sss", $word, $id, $voteState);
+        $votedate = date('Y-m-d');
+
+        $stmt = $conn->prepare( "INSERT INTO votes (word, id, votedate, opinion) VALUES ( ?, ?, ?, ? )" );
+        $stmt->bind_param("ssss", $word, $id, $votedate, $voteState);
         $stmt->execute();
         $stmt->close();
 
