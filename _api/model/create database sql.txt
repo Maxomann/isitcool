@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS `isitcool`.`votes` (
+  `word` VARCHAR(500) NOT NULL,
+  `id` BINARY(16) NULL,
+  `votedate` DATE NULL,
+  `opinion` INT NULL,
+  PRIMARY KEY (`word`))
+
+CREATE TABLE IF NOT EXISTS `isitcool`.`words` (
+  `word` VARCHAR(500) NOT NULL,
+  `value` INT NULL,
+  `value_default` INT NULL,
+  `upvotes` INT NULL,
+  `downvotes` INT NULL,
+  PRIMARY KEY (`word`),
+  UNIQUE INDEX `word_UNIQUE` (`word` ASC)
+)
